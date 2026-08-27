@@ -3,8 +3,344 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Informações de Emergência</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
     </head>
-    <body>
+    <body class="min-h-screen bg-slate-100 text-slate-900">
+        <!--Header-->
+        <header class="border-b border-slate-200 bg-white">
+            <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500 text-xl">
+                        <img src="" alt="">
+                    </div>
+
+                    <div>
+                        <p class="mt-1 text-xs text-slate-500">
+                            Informações de emergência
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!--Conteúdo-->
+        <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex flex-col items-center gap-5 sm:flex-row">
+                    <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-200 text-4xl">
+                        <i data-lucide="user" class="h-5 w-5"></i>
+                    </div>
+
+                    <!--Dados principais-->
+                    <div class="text-center sm:text-left">
+                        <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                            <h2 class="text-2xl font-bold">
+                                João Silva
+                            </h2>
+
+                            <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-600">
+                                Emergência
+                            </span>
+                        </div>
+
+                        <p class="mt-2 text-sm text-slate-500">
+                            Nascimento: 15/05/1990
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!--Aviso-->
+            <section class="mt-4 rounded-xl border border-red-100 bg-red-50 p-4">
+                <div class="flex gap-3">
+                    <div class="text-xl">
+                        <i data-lucide="siren" class="h-6 w-6"></i>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-red-700">
+                            Informações de emergência
+                        </h3>
+
+                        <p class="mt-1 text-sm leading-relaxed text-red-600">
+                            Estas informações foram disponibilizadas pelo titular
+                            do cartão para auxiliar em situações de emergência.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!--Informações principais-->
+            <section class="mt-6 grid gap-4 md:grid-cols-2">
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-lg">
+                            <i data-lucide="id-card" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Dados pessoais
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Informações de identificação
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 space-y-4">
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Nome completo
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                João Silva
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Data de nascimento
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                15/05/1990
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <!--Condições médicas-->
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-lg">
+                            <i data-lucide="triangle-alert" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Condições médicas
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Informações importantes
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 space-y-4">
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Tipo sanguíneo
+                            </p>
+
+                            <p class="mt-1 text-lg font-bold text-red-600">
+                                A+
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Alergias
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                Penicilina, Látex
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Condições importantes
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                Diabetes tipo 2, Hipertensão
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!--Medicamentos-->
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-lg">
+                            <i data-lucide="pill" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Medicamentos
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Medicamentos importantes
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <p class="font-medium">
+                            Metformina
+                        </p>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Uso contínuo
+                        </p>
+                    </div>
+                </article>
+
+                <!--Histórico-->
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-pink-50 text-lg">
+                            <i data-lucide="heart-pulse" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Histórico médico
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Histórico relevante
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 space-y-4">
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Cirurgias realizadas
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                Apendicectomia (2018)
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Doenças preexistentes
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                Diabetes tipo 2
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!--Exames e vacinas-->
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50 text-lg">
+                            <i data-lucide="flask-conical" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Exames e vacinas
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Informações relevantes
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 space-y-4">
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Exames importantes
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                Tomografia (2023)
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-medium text-slate-400">
+                                Vacinas
+                            </p>
+
+                            <p class="mt-1 font-medium">
+                                COVID-19, Influenza, Tétano
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!--Contatos-->
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-50 text-lg">
+                            <i data-lucide="phone" class="h-6 w-6"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold">
+                                Contato de emergência
+                            </h3>
+
+                            <p class="text-xs text-slate-500">
+                                Pessoa para contato
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <p class="font-semibold">
+                            Maria Silva
+                        </p>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Mãe
+                        </p>
+
+                        <a href="tel:+5585991234567" class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-green-600">
+                            <i data-lucide="phone" class="h-6 w-6"></i> 
+                            Ligar para contato
+                        </a>
+                    </div>
+                </article>
+            </section>
+
+            <!--Segurança-->
+            <section class="mt-6 rounded-xl border border-slate-200 bg-white p-4">
+                <div class="flex items-center justify-center gap-2 text-center text-xs text-slate-500">
+                    <span>
+                        <i data-lucide="lock-keyhole" class="h-6 w-6"></i>
+                    </span>
+
+                    <span>
+                        Informações protegidas e disponibilizadas pelo titular do cartão.
+                    </span>
+                </div>
+            </section>
+        </main>
+
+        <!--Footer-->
+        <footer class="mt-8 border-t border-slate-200 bg-white">
+            <div class="mx-auto max-w-5xl px-4 py-6 text-center text-xs text-slate-400 sm:px-6">
+                <p>
+                    MedAlert — Cartão de Emergência Digital
+                </p>
+            </div>
+        </footer>
+
+        <script>
+            lucide.createIcons();
+        </script>
     </body>
 </html>
