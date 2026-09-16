@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MedAlert | Login</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        
+        <!-- Configuração Tailwind -->
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+        <main class="min-h-screen flex">
+            <!--Lada esquerdo — MARCA-->
+            <section class="hidden lg:flex lg:w-1/2 min-h-screen items-center justify-center relative overflow-hidden border-r border-white/5">
+                <!--Efeito de fundo-->
+                <div class="absolute w-[500px] h-[500px] bg-medalert-red/5 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center px-10">
+                    <div class="w-44 h-44 mb-6 flex items-center justify-center">
+                        <svg viewBox="0 0 200 200" class="w-full h-full" aria-label="Logo MedAlert">
+                            <!--Moldura superior esquerda-->
+                            <path d="M45 70V55C45 43 53 35 65 35H80" fill="none" stroke="#ff1f3d" stroke-width="10" stroke-linecap="round"/>
+
+                            <path d="M120 35H135C147 35 155 43 155 55V70" fill="none" stroke="#ff1f3d" stroke-width="10" stroke-linecap="round"/>
+
+                            <path d="M45 130V145C45 157 53 165 65 165H80" fill="none" stroke="#ff1f3d" stroke-width="10" stroke-linecap="round"/>
+
+                            <path d="M120 165H135C147 165 155 157 155 145V130" fill="none" stroke="#ff1f3d" stroke-width="10" stroke-linecap="round"/>
+
+                            <rect x="78" y="55" width="44" height="90" rx="10" fill="#ff1f3d"/>
+
+                            <rect x="55" y="78" width="90" height="44" rx="10" fill="#ff1f3d"/>
+
+                            <path d="M58 100H77L85 87L94 116L105 70L115 111L123 95H142" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <h1 class=" text-5xl font-extrabold tracking-tight">
+                        Med<span class="text-medalert-red">Alert</span>
+                    </h1>
+
+                    <p class="mt-4 text-medalert-muted text-base leading-relaxed">
+                        Seu cartão de emergência digital,<br>sempre com você.
+                    </p>
+
+                    <p class="mt-20 text-slate-600 text-sm italic">
+                        Informação que salva vidas.
+                    </p>
+                </div>
+            </section>
+
+            <!--Lado direito — LOGIN-->
+            <section class="w-full lg:w-1/2 min-h-screen flex items-center justify-center px-5 py-10 sm:px-8">
+                <div class="w-full max-w-md">
+                    <!--Logo mobile-->
+                    <div class="lg:hidden flex flex-col items-center mb-10">
+                        <div class="w-16 h-16 rounded-2xl bg-medalert-red flex items-center justify-center shadow-lg shadow-medalert-red/20">
+                            <i data-lucide="heart-pulse" class="w-9 h-9 text-white"></i>
+                        </div>
+
+                        <h1 class="mt-3 text-2xl font-extrabold">
+                            Med<span class="text-medalert-red">Alert</span>
+                        </h1>
+                    </div>
+
+                    <!--Cabeçalho-->
+                    <div class="mb-8">
+                        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
+                            Bem-vinda de volta!
+                        </h2>
+
+                        <p class="mt-3 text-sm text-medalert-muted leading-relaxed">
+                            Acesse sua conta para gerenciar seu cartão de emergência.
+                        </p>
+                    </div>
+                    
+                    <!--Formulário-->
+                    <form id="loginForm" class="space-y-5">
+                        <div>
+                            <label for="email" class="block mb-2 text-sm font-medium">
+                                E-mail
+                            </label>
+
+                            <div class="relative">
+                                <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+
+                                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required class="w-full h-13 py-3 pl-12 pr-4 rounded-xl bg-medalert-card border border-medalert-border text-white placeholder:text-slate-600 outline-none transition focus:border-medalert-red focus:ring-2 focus:ring-medalert-red/10">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="password" class="text-sm font-medium">
+                                    Senha
+                                </label>
+
+                                <a href="#" class="text-xs text-medalert-red hover:underline">
+                                    Esqueceu a senha?
+                                </a>
+                            </div>
+
+                            <div class="relative">
+                                <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+
+                                <input type="password" id="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" required class=" w-full h-13 py-3 pl-12 pr-12 rounded-xl bg-medalert-card border border-medalert-border text-white placeholder:text-slate-600 outline-none transition focus:border-medalert-red focus:ring-2 focus:ring-medalert-red/10">
+
+                                <button type="button" id="togglePassword" class=" absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition" aria-label="Mostrar senha">
+                                    <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!--Lembrar de mim-->
+                        <div class="flex items-center">
+                            <label class="flex items-center gap-2 cursor-pointer text-sm text-medalert-muted">
+                                <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded accent-medalert-red">
+                                Lembrar de mim
+                            </label>
+                        </div>
+
+                        <!--Mensagem-->
+                        <div id="loginMessage" class="hidden rounded-xl px-4 py-3 text-sm"></div>
+
+                        <button type="submit" class="w-full h-13 rounded-xl bg-medalert-red hover:bg-medalert-redDark text-white font-semibold transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-medalert-red/20 active:translate-y-0">
+                            Entrar
+                        </button>
+                    </form>
+
+                    <!--Divisor-->
+                    <div class="flex items-center gap-4 my-7">
+                        <div class="h-px flex-1 bg-medalert-border"></div>
+
+                        <span class="text-xs text-slate-600">
+                            ou
+                        </span>
+
+                        <div class="h-px flex-1 bg-medalert-border"></div>
+                    </div>
+
+                    <!--Google-->
+                    <button type="button" class="w-full h-13 rounded-xl border border-medalert-border bg-transparent hover:bg-white/[0.03] text-sm font-medium flex items-center justify-center gap-3 transition">
+                        <span class="text-lg font-bold">
+                            G
+                        </span>
+
+                        Entrar com o Google
+                    </button>
+
+                    <!--Cadastro-->
+                    <p class="mt-8 text-center text-sm text-medalert-muted">
+                        Não tem uma conta?
+
+                        <a href="./register.html" class="ml-1 text-medalert-red font-semibold hover:underline">
+                            Cadastre-se
+                        </a>
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <!--JavaScript-->
+        <script src="../js/login.js"></script>
+
+        <!--Lucide-->
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
+</html>
