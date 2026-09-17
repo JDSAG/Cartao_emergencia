@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MedAlert | Início</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+        <!--Estrutura principal-->
+        <div class="min-h-screen flex">
+            <!--Sidebar desktop-->
+            <aside class="hidden lg:flex w-64 min-h-screen flex-col border-r border-white/5 bg-medalert-bg fixed left-0 top-0 bottom-0">
+                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/5">
+                    <div class="w-10 h-10 rounded-xl bg-medalert-red flex items-center justify-center shadow-lg shadow-medalert-red/20">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+                    </div>
+
+                    <span class="text-xl font-extrabold">
+                        Med<span class="text-medalert-red">Alert</span>
+                    </span>
+                </div>
+
+                <!--Menu-->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-medalert-red/10 text-medalert-red font-medium text-sm">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                        Início
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                        Meu cartão
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+
+                        Informações médicas
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+
+                        Contatos
+                    </a>
+
+                    <div class="h-px bg-medalert-border my-5"></div>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+
+                        Meu perfil
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+
+                        Configurações
+                    </a>
+                </nav>
+
+                <!--Usuário-->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-medalert-card">
+                        <div class="w-9 h-9 rounded-full bg-medalert-red/15 text-medalert-red flex items-center justify-center font-bold text-sm" id="sidebarAvatar">
+                            U
+                        </div>
+
+                        <div class="min-w-0">
+                            <p id="sidebarName" class="text-sm font-medium truncate">
+                                Usuário
+                            </p>
+
+                            <p id="sidebarEmail" class="text-xs text-medalert-muted truncate">
+                                usuário@email.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!--Área principal-->
+            <main class="w-full lg:ml-64 pb-24 lg:pb-10">
+                <!--Header-->
+                <header class="h-20 px-5 sm:px-8 lg:px-10 flex items-center justify-between border-b border-white/5">
+                    <div>
+                        <p class="text-xs sm:text-sm text-medalert-muted">
+                            Bem-vinda,
+                        </p>
+
+                        <h1 id="welcomeName" class="text-lg sm:text-xl font-bold">
+                            Usuária
+                        </h1>
+                    </div>
+
+                    <!--Ações-->
+                    <div class="flex items-center gap-2">
+                        <!--Notificações-->
+                        <button type="button" class="w-10 h-10 rounded-xl border border-medalert-border flex items-center justify-center text-medalert-muted hover:text-white hover:bg-white/[0.03] transition relative">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+
+                            <span class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-medalert-red"></span>
+                        </button>
+
+                        <!--Perfil mobile-->
+                        <a href="#" class="lg:hidden w-10 h-10 rounded-xl bg-medalert-red/10 text-medalert-red flex items-center justify-center">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </header>
+
+                <!--Conteúdo-->
+                <div class="px-5 sm:px-8 lg:px-10 py-8 max-w-7xl mx-auto">
+                    <!--Status do cartão-->
+                    <section class="relative overflow-hidden rounded-2xl border border-medalert-red/20 bg-gradient-to-br from-medalert-red/[0.12] to-medalert-card p-6 sm:p-8">
+                        <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-medalert-red/10 blur-3xl"></div>
+
+                        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium mb-4">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+
+                                    Cartão ativo
+                                </div>
+
+                                <h2 class="text-2xl sm:text-3xl font-bold">
+                                    Seu cartão está protegido.
+                                </h2>
+
+                                <p class="mt-2 max-w-xl text-sm text-medalert-muted leading-relaxed">
+                                    Mantenha suas informações de emergência
+                                    atualizadas para que possam ser acessadas
+                                    quando necessário.
+                                </p>
+                            </div>
+
+                            <a href="#" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-medalert-red hover:bg-medalert-redDark text-white text-sm font-semibold transition whitespace-nowrap">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+
+                                Ver meu cartão
+                            </a>
+                        </div>
+                    </section>
+
+                    <!--Grid principal-->
+                    <div class=" grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+                        <!--Informações-->
+                        <section class="xl:col-span-2 rounded-2xl border border-medalert-border bg-medalert-card p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class=" font-semibold">
+                                        Informações de emergência
+                                    </h3>
+
+                                    <p class="mt-1 text-xs text-medalert-muted">
+                                        Dados disponíveis no seu cartão
+                                    </p>
+                                </div>
+
+                                <a href="#" class="text-xs text-medalert-red font-medium hover:underline">
+                                    Editar
+                                </a>
+                            </div>
+
+                            <!--Grid-->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="rounded-xl border border-medalert-border p-4">
+                                    <div class="w-9 h-9 rounded-lg bg-medalert-red/10 text-medalert-red flex items-center justify-center mb-3">
+                                        <i data-lucide="droplet" class="w-5 h-5"></i>
+                                    </div>
+
+                                    <p class="text-xs text-medalert-muted">
+                                        Tipo sanguíneo
+                                    </p>
+
+                                    <p class="mt-1 text-lg font-bold">
+                                        Não informado
+                                    </p>
+                                </div>
+
+                                <div class="rounded-xl border border-medalert-border p-4">
+                                    <div class="w-9 h-9 rounded-lg bg-medalert-red/10 text-medalert-red flex items-center justify-center mb-3">
+                                        <i data-lucide="triangle-alert" class="w-5 h-5"></i>
+                                    </div>
+
+                                    <p class="text-xs text-medalert-muted">
+                                        Alergias
+                                    </p>
+
+                                    <p class="mt-1 text-lg font-bold">
+                                        Não informado
+                                    </p>
+                                </div>
+
+                                <div class="rounded-xl border border-medalert-border p-4">
+                                    <div class="w-9 h-9 rounded-lg bg-medalert-red/10 text-medalert-red flex items-center justify-center mb-3">
+                                        <i data-lucide="pill" class="w-5 h-5"></i>
+                                    </div>
+
+                                    <p class="text-xs text-medalert-muted">
+                                        Medicamentos
+                                    </p>
+
+                                    <p class="mt-1 text-lg font-bold">
+                                        Não informado
+                                    </p>
+                                </div>
+
+                                <div class="rounded-xl border border-medalert-border p-4">
+                                    <div class="w-9 h-9 rounded-lg bg-medalert-red/10 text-medalert-red flex items-center justify-center mb-3">
+                                        <i data-lucide="phone" class="w-5 h-5"></i>
+                                    </div>
+
+                                    <p class="text-xs text-medalert-muted">
+                                        Contato de emergência
+                                    </p>
+
+                                    <p class="mt-1 text-lg font-bold">
+                                        Não informado
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!--Aviso-->
+                            <div class="mt-5 flex items-start gap-3 p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/10">
+                                <i data-lucide="info" class="w-5 h-5 text-yellow-400 shrink-0"></i>
+
+                                <p class="text-xs text-medalert-muted leading-relaxed">
+                                    Complete suas informações médicas
+                                    e contatos de emergência para deixar
+                                    seu cartão preparado.
+                                </p>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!--Acesso rápido-->
+                    <section class="mt-8">
+                        <div class="mb-4">
+                            <h3 class="font-semibold">
+                                Acesso rápido
+                            </h3>
+
+                            <p class="mt-1 text-xs text-medalert-muted">
+                                Gerencie seu cartão de emergência
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <a href="" class="p-4 rounded-2xl border border-medalert-border bg-medalert-card hover:border-medalert-red/40 hover:bg-medalert-red/[0.03] transition">
+                                <i data-lucide="id-card" class="w-5 h-5 text-medalert-red"></i>
+
+                                <p class="mt-3 text-sm font-medium">
+                                    Meu cartão
+                                </p>
+                            </a>
+
+                            <a href="" class="p-4 rounded-2xl border border-medalert-border bg-medalert-card hover:border-medalert-red/40 hover:bg-medalert-red/[0.03] transition">
+                                <i data-lucide="heart-pulse" class="w-5 h-5 text-medalert-red"></i>
+
+                                <p class="mt-3 text-sm font-medium">
+                                    Dados médicos
+                                </p>
+                            </a>
+
+                            <a href="" class="p-4 rounded-2xl border border-medalert-border bg-medalert-card hover:border-medalert-red/40 hover:bg-medalert-red/[0.03] transition">
+                                <i data-lucide="users" class="w-5 h-5 text-medalert-red"></i>
+
+                                <p class="mt-3 text-sm font-medium">
+                                    Contatos
+                                </p>
+                            </a>
+
+                            <a href="" class="p-4 rounded-2xl border border-medalert-border bg-medalert-card hover:border-medalert-red/40 hover:bg-medalert-red/[0.03] transition">
+                                <i data-lucide="user" class="w-5 h-5 text-medalert-red"></i>
+
+                                <p class="mt-3 text-sm font-medium">
+                                    Meu perfil
+                                </p>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+
+        <!--Navegação mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-20 bg-medalert-bg/95 backdrop-blur-xl border-t border-white/5 px-3">
+            <div class="h-full flex items-center justify-around">
+                <a href="./dashboard.html" class="flex flex-col items-center gap-1 text-medalert-red">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Início
+                    </span>
+                </a>
+
+                <a href="" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Cartão
+                    </span>
+                </a>
+
+                <a href="" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Contatos
+                    </span>
+                </a>
+
+                <a href="" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Perfil
+                    </span>
+                </a>
+            </div>
+        </nav>
+
+        <script src="../js/dashboard.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
+</html>
