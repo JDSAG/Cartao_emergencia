@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meu Perfil | Cartão de Emergência</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            emergency: {
+                                bg: "#0b0f1a",
+                                card: "#111827",
+                                border: "#1f2937"
+                            }
+                        }
+                    }
+                }
+            };
+        </script>
+    </head>
+    <body class="bg-emergency-bg text-white min-h-screen">
+        <!--Header mobile-->
+        <header class="lg:hidden flex items-center justify-between p-5 border-b border-emergency-border">
+            <a href="./dashboard.html" class="flex items-center gap-2">
+                <i data-lucide="heart-pulse" class="w-6 h-6 text-red-500"></i>
+                
+                <span class="font-bold">Meu Perfil</span>
+            </a>
+
+            <a href="./dashboard.html" class="text-gray-400 hover:text-white">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </a>
+        </header>
+
+        <div class="flex min-h-screen">
+            <!--Sidebar-->
+            <aside class="hidden lg:flex w-72 flex-col border-r border-emergency-border bg-emergency-card p-6">
+                <a href="../index.html" class="flex items-center gap-3 mb-10">
+                    <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center">
+                        <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+                    </div>
+
+                    <span class="font-bold text-lg">
+                        Cartão de Emergência
+                    </span>
+                </a>
+
+                <!--Usuário-->
+                <div class="flex items-center gap-3 pb-6 border-b border-emergency-border">
+                    <div id="sidebarAvatar" class="w-11 h-11 rounded-full bg-gray-700 flex items-center justify-center font-bold">
+                        US
+                    </div>
+
+                    <div class="min-w-0">
+                        <p id="sidebarName" class="font-semibold truncate">
+                            Usuário
+                        </p>
+
+                        <p id="sidebarEmail" class="text-xs text-gray-500 truncate">
+                            email@exemplo.com
+                        </p>
+                    </div>
+                </div>
+
+                <!--Navegação-->
+                <nav class="flex flex-col gap-2 mt-6">
+                    <a href="./dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        
+                        Dashboard
+                    </a>
+
+                    <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i data-lucide="id-card" class="w-5 h-5"></i>
+                        
+                        Meu cartão
+                    </a>
+
+                    <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+                        
+                        Informações de saúde
+                    </a>
+
+                    <a href="" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                        
+                        Contatos
+                    </a>
+
+                    <a href="./profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-600/10 text-red-400">
+                        <i data-lucide="user-round" class="w-5 h-5"></i>
+                        
+                        Meu perfil
+                    </a>
+                </nav>
+
+                <!--Logout-->
+                <button id="logoutButton" class="mt-auto flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-red-600/10 hover:text-red-400 transition">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    
+                    Sair da conta
+                </button>
+            </aside>
+
+            <!--Main-->
+            <main class="flex-1 p-5 md:p-8 lg:p-10">
+                <!--Header-->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                    <div>
+                        <p class="text-sm text-red-500 font-semibold uppercase tracking-wider">
+                            Configurações pessoais
+                        </p>
+
+                        <h1 class="text-3xl font-bold mt-2">
+                            Meu perfil
+                        </h1>
+
+                        <p class="text-gray-400 mt-2">
+                            Visualize e atualize seus dados pessoais.
+                        </p>
+                    </div>
+
+                    <a href="./dashboard.html" class="hidden md:inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-emergency-border text-gray-300 hover:bg-emergency-card transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        
+                        Voltar
+                    </a>
+                </div>
+
+                <!--Perfil card-->
+                <section class="max-w-4xl">
+                    <div class="bg-emergency-card border border-emergency-border rounded-2xl p-6 md:p-8">
+                        <!--Perfil header-->
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 pb-8 border-b border-emergency-border">
+                            <div id="profileAvatar" class="w-24 h-24 rounded-full bg-red-600/20 border border-red-600/30 text-red-400 flex items-center justify-center text-3xl font-bold">
+                                US
+                            </div>
+
+                            <div class="text-center sm:text-left">
+                                <h2 id="profileName" class="text-2xl font-bold">
+                                    Usuário
+                                </h2>
+
+                                <p id="profileEmail" class="text-gray-400 mt-1">
+                                    email@exemplo.com
+                                </p>
+
+                                <div class="inline-flex items-center gap-2 mt-3 text-sm text-green-400">
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
+                                    Conta cadastrada
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Formulário-->
+                        <form id="profileForm" class="mt-8 space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold">
+                                    Dados pessoais
+                                </h3>
+
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Mantenha seus dados atualizados.
+                                </p>
+                            </div>
+
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-300 mb-2">
+                                    Nome completo
+                                </label>
+
+                                <div class="relative">
+                                    <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+                                    <input type="text" id="name" name="name" required autocomplete="name" class="w-full bg-gray-900 border border-emergency-border rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="Digite seu nome completo">
+                                </div>
+
+                                <p id="nameError" class="text-sm text-red-400 mt-1 hidden"></p>
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                                    E-mail
+                                </label>
+
+                                <div class="relative">
+                                    <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+                                    <input type="email" id="email" name="email" required autocomplete="email" class="w-full bg-gray-900 border border-emergency-border rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="Digite seu e-mail">
+                                </div>
+
+                                <p id="emailError" class="text-sm text-red-400 mt-1 hidden"></p>
+                            </div>
+
+                            <div>
+                                <label for="cpf" class="block text-sm font-medium text-gray-300 mb-2">
+                                    CPF
+                                </label>
+
+                                <div class="relative">
+                                    <i data-lucide="fingerprint" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+                                    <input type="text" id="cpf" name="cpf" maxlength="14" autocomplete="off" class="w-full bg-gray-900 border border-emergency-border rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="000.000.000-00">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">
+                                    Telefone
+                                </label>
+
+                                <div class="relative">
+                                    <i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+                                    <input type="tel" id="phone" name="phone" maxlength="15" autocomplete="tel" class="w-full bg-gray-900 border border-emergency-border rounded-xl py-3 pl-11 pr-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-600" placeholder="(00) 00000-0000">
+                                </div>
+                            </div>
+
+                            <!--Mensagem-->
+                            <div id="formMessage" class="hidden rounded-xl px-4 py-3 text-sm"></div>
+
+                            <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                                <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
+                                    <i data-lucide="save" class="w-5 h-5"></i>
+
+                                    Salvar alterações
+                                </button>
+
+                                <button type="reset" class="px-6 py-3 rounded-xl border border-emergency-border text-gray-300 hover:bg-gray-800 transition">
+                                    Restaurar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script src="../js/profile.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
+</html>

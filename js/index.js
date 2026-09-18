@@ -20,10 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Troca o ícone do botão
             mobileMenuButton.innerHTML = isOpen ? `<i data-lucide="x" class="w-6 h-6"></i>` : `<i data-lucide="menu" class="w-6 h-6"></i>`;
-
-            if (typeof lucide !== "undefined") {
-                lucide.createIcons();
-            }
         });
     }
 
@@ -40,10 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 mobileMenuButton.setAttribute("aria-expanded", "false");
 
                 mobileMenuButton.innerHTML = `<i data-lucide="menu" class="w-6 h-6"></i>`;
-
-                if (typeof lucide !== "undefined") {
-                    lucide.createIcons();
-                }
             }
         });
     });
@@ -78,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const logged = localStorage.getItem("medalert_logged");
     const loginLinks = document.querySelectorAll('a[href="./pages/login.html"]');
     const registerLinks = document.querySelectorAll('a[href="./pages/register.html"]');
-
 
     /*Se o usuário já estiver autenticado, podemos alterar os links principais para
     facilitar o acesso ao dashboard. Não redirecionamos automaticamente.*/
