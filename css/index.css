@@ -1,0 +1,88 @@
+/* Reset e configuração */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Seleção de texto */
+::selection {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+/* Barra de rolagem */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0b0f1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #dc2626;
+}
+
+/* Animação */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+.animate-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Acessibilidade */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #ef4444;
+    outline-offset: 4px;
+}
+
+/* Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    [data-animate] {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+    h1 {
+        font-size: 2.25rem;
+        line-height: 1.2;
+    }
+
+    h2 {
+        line-height: 1.3;
+    }
+}
