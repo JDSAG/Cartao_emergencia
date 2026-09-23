@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Informações de Saúde | Cartão de Emergência</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+        <!--Header mobile-->
+        <header class="lg:hidden flex items-center justify-between p-5 border-b border-emergency-border">
+            <a href="./dashboard.html" class="flex items-center gap-2">
+                <i data-lucide="heart-pulse" class="w-6 h-6 text-red-500"></i>
+                
+                <span class="font-bold">Minhas Informações</span>
+            </a>
+
+            <a href="./card.html" class="inline-flex md:hidden items-center gap-2 px-4 py-2.5 rounded-lg border border-emergency-border text-gray-300 hover:bg-emergency-card transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+        </header>
+        
+        <!--Estrutura principal-->
+        <div class="min-h-screen flex">
+            <!--Sidebar desktop-->
+            <aside class="hidden lg:flex w-64 min-h-screen flex-col border-r border-white/5 bg-medalert-bg fixed left-0 top-0 bottom-0">
+                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/5">
+                    <div class="w-10 h-10 rounded-xl bg-medalert-red flex items-center justify-center shadow-lg shadow-medalert-red/20">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+                    </div>
+
+                    <span class="text-xl font-extrabold">
+                        Med<span class="text-medalert-red">Alert</span>
+                    </span>
+                </div>
+
+                <!--Menu-->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                        Início
+                    </a>
+
+                    <a href="./card.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                        Meu cartão
+                    </a>
+
+                    <a href="./information.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-medalert-red/10 text-medalert-red font-medium text-sm">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+
+                        Informações médicas
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+
+                        Contatos
+                    </a>
+
+                    <div class="h-px bg-medalert-border my-5"></div>
+
+                    <a href="./profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+
+                        Meu perfil
+                    </a>
+
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+
+                        Configurações
+                    </a>
+                </nav>
+
+                <!--Usuário-->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-medalert-card">
+                        <div class="w-9 h-9 rounded-full bg-medalert-red/15 text-medalert-red flex items-center justify-center font-bold text-sm" id="sidebarAvatar">
+                            U
+                        </div>
+
+                        <div class="min-w-0">
+                            <p id="sidebarName" class="text-sm font-medium truncate">
+                                Usuário
+                            </p>
+
+                            <p id="sidebarEmail" class="text-xs text-medalert-muted truncate">
+                                usuário@email.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!--Conteúdo principal-->
+            <main  class="w-full lg:ml-64 pb-24 lg:pb-10 pt-5">
+                <!--Página header-->
+                <header class="h-15 px-5 sm:px-8 lg:px-10 flex items-center justify-between border-b border-white/5">
+                    <div>
+                        <p class="text-xs sm:text-sm text-medalert-muted">
+                            Informações pessoais
+                        </p>
+
+                        <h1 class="text-3xl font-bold mt-2">
+                            Informações de saúde
+                        </h1>
+
+                        <p class="text-gray-400 mt-2">
+                            Preencha os dados que deseja disponibilizar
+                            no seu cartão de emergência.
+                        </p>
+                    </div>
+                </header>
+
+                <!--Formulário-->
+                <form id="healthForm" class="mt-8 mx-auto max-w-3xl border border-medalert-red/20 bg-gradient-to-br from-medalert-red/[0.12] to-medalert-card rounded-2xl p-6 md:p-8">
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-5 flex items-center gap-2">
+                            <i data-lucide="user-round" class="w-5 h-5 text-red-500"></i>
+
+                            Dados pessoais
+                        </h2>
+
+                        <div class="mb-5">
+                            <label for="bloodType" class="block text-sm font-medium text-gray-300 mb-2">
+                                Tipo sanguíneo
+                            </label>
+
+                            <select id="bloodType" class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500">
+                                <option value="">Selecione seu tipo sanguíneo</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Não informado">Não informado</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="birthDate" class="block text-sm font-medium text-gray-300 mb-2">
+                                Data de nascimento
+                            </label>
+
+                            <input type="date" id="birthDate" class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                Data de validação do cartão
+                            </label>
+
+                            <div class="w-full bg-gray-800 border border-emergency-border rounded-xl px-4 py-3 text-gray-400">
+                                Gerada automaticamente ao salvar
+                            </div>
+
+                            <p class="text-xs text-gray-500 mt-2">
+                                A data será atualizada automaticamente quando
+                                você salvar suas informações.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                            <i data-lucide="brain" class="w-5 h-5 text-red-500"></i>
+
+                            Condições neurológicas e neurodivergências
+                        </h2>
+
+                        <p class="text-sm text-gray-400 mb-5">
+                            Selecione as informações que deseja incluir no cartão.
+                        </p>
+
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Autismo (TEA)" class="w-4 h-4 accent-red-600">
+
+                                <span>Autismo (TEA)</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="TDAH" class="w-4 h-4 accent-red-600">
+
+                                <span>TDAH</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Ansiedade" class="w-4 h-4 accent-red-600">
+
+                                <span>Ansiedade</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Epilepsia" class="w-4 h-4 accent-red-600">
+
+                                <span>Epilepsia</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Dislexia" class="w-4 h-4 accent-red-600">
+
+                                <span>Dislexia</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Transtorno bipolar" class="w-4 h-4 accent-red-600">
+
+                                <span>Transtorno bipolar</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 bg-gray-900 border border-emergency-border rounded-xl p-3 cursor-pointer">
+                                <input type="checkbox" name="neurologicalConditions" value="Nenhuma" class="w-4 h-4 accent-red-600">
+
+                                <span>Nenhuma</span>
+                            </label>
+                        </div>
+
+                        <div class="mt-5">
+                            <label for="otherNeurologicalCondition" class="block text-sm font-medium text-gray-300 mb-2">
+                                Outra condição
+                            </label>
+
+                            <input type="text" id="otherNeurologicalCondition" placeholder="Informe outra condição, se desejar" class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500">
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-xl font-semibold mb-5 flex items-center gap-2">
+                            <i data-lucide="heart-pulse" class="w-5 h-5 text-red-500"></i>
+
+                            Informações médicas
+                        </h2>
+
+                        <div class="mb-5">
+                            <label for="allergies" class="block text-sm font-medium text-gray-300 mb-2">
+                                Alergias
+                            </label>
+
+                            <textarea id="allergies" rows="3" placeholder="Informe suas alergias..." class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500"></textarea>
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="medications" class="block text-sm font-medium text-gray-300 mb-2">
+                                Medicamentos
+                            </label>
+
+                            <textarea id="medications" rows="3" placeholder="Informe os medicamentos utilizados..." class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="conditions" class="block text-sm font-medium text-gray-300 mb-2">
+                                Outras condições médicas
+                            </label>
+
+                            <textarea id="conditions" rows="3" placeholder="Informe outras condições médicas..." class="w-full bg-gray-900 border border-emergency-border rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-red-500"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                        <i data-lucide="info" class="w-5 h-5 text-yellow-400 mt-0.5"></i>
+
+                        <p class="text-sm text-yellow-200/80">
+                            O preenchimento dessas informações é voluntário.
+                            Informe apenas os dados que deseja disponibilizar
+                            em situações de emergência.
+                        </p>
+                    </div>
+
+                    <!--Mensagem-->
+                    <p id="formMessage" class="text-sm mb-4"></p>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
+                            <i data-lucide="save" class="w-5 h-5"></i>
+
+                            Salvar informações
+                        </button>
+
+                        <a href="./card.html" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-emergency-border text-gray-300 hover:bg-gray-800 transition">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+        <script src="../js/information.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+
+    </body>
+</html>
