@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MedAlert | Início</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+        <!--Estrutura principal-->
+        <div class="min-h-screen flex">
+            <!--Sidebar desktop-->
+            <aside class="hidden lg:flex w-64 min-h-screen flex-col border-r border-white/5 bg-medalert-bg fixed left-0 top-0 bottom-0">
+                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/5">
+                    <div class="w-10 h-10 rounded-xl bg-medalert-red flex items-center justify-center shadow-lg shadow-medalert-red/20">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+                    </div>
+
+                    <span class="text-xl font-extrabold">
+                        Med<span class="text-medalert-red">Alert</span>
+                    </span>
+                </div>
+
+                <!--Menu-->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                        Início
+                    </a>
+
+                    <a href="./card.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                        Meu cartão
+                    </a>
+
+                    <a href="./information.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+
+                        Informações médicas
+                    </a>
+
+                    <a href="./contacts.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-medalert-red/10 text-medalert-red font-medium text-sm">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+
+                        Contatos
+                    </a>
+
+                    <div class="h-px bg-medalert-border my-5"></div>
+
+                    <a href="./profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+
+                        Meu perfil
+                    </a>
+
+                    <a href="./config.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+
+                        Configurações
+                    </a>
+                </nav>
+
+                <!--Usuário-->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-medalert-card">
+                        <div class="w-9 h-9 rounded-full bg-medalert-red/15 text-medalert-red flex items-center justify-center font-bold text-sm" id="sidebarAvatar">
+                            U
+                        </div>
+
+                        <div class="min-w-0">
+                            <p id="sidebarName" class="text-sm font-medium truncate">
+                                Usuário
+                            </p>
+
+                            <p id="sidebarEmail" class="text-xs text-medalert-muted truncate">
+                                usuário@email.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="max-w-4xl mx-auto px-4 sm:px-8 py-8">
+                <!-- Cabeçalho -->
+                <header class="mb-8">
+                    <h1 class="text-3xl font-bold">
+                        Contatos de emergência
+                    </h1>
+
+                    <p class="text-gray-400 mt-2">
+                        Cadastre pessoas que podem ser contatadas em uma emergência.
+                    </p>
+                </header>
+
+                <!-- Formulário -->
+                <section class="bg-gray-900 border border-gray-800 rounded-2xl p-5 sm:p-8">
+                    <h2 class="text-xl font-semibold mb-6">
+                        Adicionar contato
+                    </h2>
+
+                    <form id="contactForm" class="space-y-5">
+                        <input type="hidden" id="contactId">
+
+                        <div>
+                            <label for="contactName" class="block text-sm font-medium mb-2">
+                                Nome completo
+                            </label>
+
+                            <input type="text" id="contactName" required class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-red-500 outline-none" placeholder="Nome do contato">
+                        </div>
+
+                        <div>
+                            <label for="contactPhone" class="block text-sm font-medium mb-2">
+                                Telefone
+                            </label>
+
+                            <input type="tel" id="contactPhone" required class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-red-500 outline-none" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div>
+                            <label for="contactRelationship" class="block text-sm font-medium mb-2">
+                                Grau de parentesco
+                            </label>
+
+                            <input type="text" id="contactRelationship" required class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-red-500 outline-none" placeholder="Mãe, pai, irmão, amigo...">
+                        </div>
+
+                        <div>
+                            <label for="contactEmail" class="block text-sm font-medium mb-2">
+                                E-mail
+                            </label>
+
+                            <input type="email" id="contactEmail" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-red-500 outline-none" placeholder="contato@email.com">
+                        </div>
+
+                        <div id="formMessage" class="hidden text-sm"></div>
+
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
+                                <i data-lucide="save" class="w-5 h-5"></i>
+
+                                Salvar contato
+                            </button>
+
+                            <button type="button" id="cancelEdit" class="hidden w-full sm:w-auto px-5 py-3 rounded-xl border border-gray-700 hover:bg-gray-800 transition">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Lista de contatos -->
+                <section class="mt-8">
+                    <h2 class="text-xl font-semibold mb-4">
+                        Meus contatos
+                    </h2>
+
+                    <div id="contactsList" class="space-y-4"></div>
+
+                    <p id="emptyMessage" class="text-gray-400 text-center py-8">
+                        Nenhum contato cadastrado.
+                    </p>
+                </section>
+            </main>
+        </div>
+
+        <!--Navegação mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-20 bg-medalert-bg/95 backdrop-blur-xl border-t border-white/5 px-3">
+            <div class="h-full flex items-center justify-around">
+                <a href="./dashboard.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Início
+                    </span>
+                </a>
+
+                <a href="./card.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Cartão
+                    </span>
+                </a>
+
+                <a href="./contacts.html" class="flex flex-col items-center gap-1 text-medalert-red">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Contatos
+                    </span>
+                </a>
+
+                <a href="./profile.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Perfil
+                    </span>
+                </a>
+            </div>
+        </nav>
+
+        <script src="../js/contacts.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
+</html>
