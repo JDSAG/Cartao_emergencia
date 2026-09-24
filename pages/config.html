@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MedAlert | Início</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+        <!--Header mobile-->
+        <header class="lg:hidden flex items-center justify-between p-5 border-b border-emergency-border">
+            <a href="./dashboard.html" class="flex items-center gap-2">
+                <i data-lucide="heart-pulse" class="w-6 h-6 text-red-500"></i>
+                
+                <span class="font-bold">Configurações</span>
+            </a>
+
+            <a href="./profile.html" class="inline-flex md:hidden items-center gap-2 px-4 py-2.5 rounded-lg border border-emergency-border text-gray-300 hover:bg-emergency-card transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+        </header>
+        <!--Estrutura principal-->
+        <div class="min-h-screen flex">
+            <!--Sidebar desktop-->
+            <aside class="hidden lg:flex w-64 min-h-screen flex-col border-r border-white/5 bg-medalert-bg fixed left-0 top-0 bottom-0">
+                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/5">
+                    <div class="w-10 h-10 rounded-xl bg-medalert-red flex items-center justify-center shadow-lg shadow-medalert-red/20">
+                        <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+                    </div>
+
+                    <span class="text-xl font-extrabold">
+                        Med<span class="text-medalert-red">Alert</span>
+                    </span>
+                </div>
+
+                <!--Menu-->
+                <nav class="flex-1 px-4 py-6 space-y-2">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                        Início
+                    </a>
+
+                    <a href="./card.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                        Meu cartão
+                    </a>
+
+                    <a href="./information.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+
+                        Informações médicas
+                    </a>
+
+                    <a href="./contacts.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+
+                        Contatos
+                    </a>
+
+                    <div class="h-px bg-medalert-border my-5"></div>
+
+                    <a href="./profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-medalert-muted hover:bg-white/[0.03] hover:text-white transition text-sm">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+
+                        Meu perfil
+                    </a>
+
+                    <a href="./config.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-medalert-red/10 text-medalert-red font-medium text-sm"">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+
+                        Configurações
+                    </a>
+                </nav>
+
+                <!--Usuário-->
+                <div class="p-4 border-t border-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-medalert-card">
+                        <div class="w-9 h-9 rounded-full bg-medalert-red/15 text-medalert-red flex items-center justify-center font-bold text-sm" id="sidebarAvatar">
+                            U
+                        </div>
+
+                        <div class="min-w-0">
+                            <p id="sidebarName" class="text-sm font-medium truncate">
+                                Usuário
+                            </p>
+
+                            <p id="sidebarEmail" class="text-xs text-medalert-muted truncate">
+                                usuário@email.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main  class="w-full lg:ml-64 pb-24 lg:pb-10 pt-5">
+                <!--Página header-->
+                <header class="h-15 px-5 sm:px-8 lg:px-10 flex items-center justify-between border-b border-white/5">
+                    <div>
+                        <h1 class="text-3xl font-bold mt-2">
+                            Configurações
+                        </h1>
+
+                        <p class="text-gray-400 mt-2">
+                            Gerencie suas preferências e a segurança da sua conta.
+                        </p>
+                    </div>
+                </header>
+
+                <!-- Conteúdo das configurações -->
+                <div class="px-4 sm:px-8 lg:px-10 py-5 max-w-5xl mx-auto">
+                    <div class="space-y-5">
+                        <!-- Conta -->
+                        <section class="bg-medalert-card rounded-2xl p-5 sm:p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center">
+                                    <i data-lucide="user-round" class="w-5 h-5 text-red-500"></i>
+                                </div>
+
+                                <div>
+                                    <h2 class="text-lg font-semibold">
+                                        Conta
+                                    </h2>
+
+                                    <p class="text-sm text-gray-400">
+                                        Gerencie os dados da sua conta.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                                        E-mail
+                                    </label>
+
+                                    <input type="email" id="email" class="w-full bg-gray-900 border border-medalert-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500" placeholder="Seu e-mail">
+                                </div>
+
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                                        Nova senha
+                                    </label>
+
+                                    <input type="password" id="password" class="w-full bg-gray-900 border border-medalert-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500" placeholder="Digite uma nova senha">
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Privacidade -->
+                        <section class="bg-medalert-card rounded-2xl p-5 sm:p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center">
+                                    <i data-lucide="shield-check" class="w-5 h-5 text-red-500"></i>
+                                </div>
+
+                                <div>
+                                    <h2 class="text-lg font-semibold">
+                                        Privacidade
+                                    </h2>
+
+                                    <p class="text-sm text-gray-400">
+                                        Controle a visibilidade das suas informações.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox" id="showMedicalInfo" class="mt-1 w-4 h-4 accent-red-600">
+
+                                    <div>
+                                        <p class="font-medium">
+                                            Exibir informações médicas
+                                        </p>
+
+                                        <p class="text-sm text-gray-400 mt-1">
+                                            Permitir que suas informações médicas sejam exibidas no cartão.
+                                        </p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox" id="publicCard" class="mt-1 w-4 h-4 accent-red-600">
+                                    <div>
+                                        <p class="font-medium">
+                                            Cartão público
+                                        </p>
+
+                                        <p class="text-sm text-gray-400 mt-1">
+                                            Permitir o acesso ao cartão por meio de um link público.
+                                        </p>
+                                    </div>
+                                </label>
+                            </div>
+                        </section>
+
+                        <!-- Preferências -->
+                        <section class="bg-medalert-card rounded-2xl p-5 sm:p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center">
+                                    <i data-lucide="sliders-horizontal" class="w-5 h-5 text-red-500"></i>
+                                </div>
+
+                                <div>
+                                    <h2 class="text-lg font-semibold">
+                                        Preferências
+                                    </h2>
+
+                                    <p class="text-sm text-gray-400">
+                                        Personalize sua experiência.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <label class="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" id="notifications" class="mt-1 w-4 h-4 accent-red-600">
+
+                                <div>
+                                    <p class="font-medium">
+                                        Receber notificações
+                                    </p>
+
+                                    <p class="text-sm text-gray-400 mt-1">
+                                        Ativar notificações importantes da sua conta.
+                                    </p>
+                                </div>
+                            </label>
+                        </section>
+
+                        <!-- Segurança -->
+                        <section class="bg-medalert-card rounded-2xl p-5 sm:p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center">
+                                    <i data-lucide="lock" class="w-5 h-5 text-red-500"></i>
+                                </div>
+
+                                <div>
+                                    <h2 class="text-lg font-semibold">
+                                        Segurança
+                                    </h2>
+
+                                    <p class="text-sm text-gray-400">
+                                        Ações relacionadas à sua conta.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                                <!-- Botão Salvar -->
+                                <button id="saveSettings" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
+                                    <i data-lucide="save" class="w-5 h-5"></i>
+
+                                    Salvar
+                                </button>
+
+                                <!-- Botão Sair -->
+                                <button id="logoutButtonMobile" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
+                                    <i data-lucide="log-out" class="w-5 h-5"></i>
+
+                                    Sair da conta
+                                </button>
+                            </div>
+                        </section>
+
+                        <!-- Mensagem -->
+                        <p id="formMessage" class="text-sm"></p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script src="../js/config.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
+</html>
