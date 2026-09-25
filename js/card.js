@@ -53,22 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const emergencyContactPhone = document.getElementById("emergencyContactPhone");
 
     // Funções auxiliares
-    function displayValue(value) {
-        if (!value || value.length === 0) {
-            return "Não informado";
-        }
-
-        if (Array.isArray(value)) {
-            return value.length > 0 ? value.join(", ") : "Não informado";
-        }
-
-        return value;
+    function displayValue(value) { 
+        if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) { 
+            return "Não informado"; 
+        } 
+        
+        if (Array.isArray(value)) { 
+            return value.join(", "); 
+        } 
+        
+        return value; 
     }
 
     function getInitials(name) {
-        if (!name) return "US";
+        if (!name) {
+            return "US";
+        }
 
-        const names = name.trim().split(" ");
+        const names = name.trim().split(/\S+/);
 
         if (names.length === 1) {
             return names[0].substring(0, 2).toUpperCase();
@@ -154,12 +156,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Contato de emergência
+    let emergencyContact = null;
+
+    if (Array.isArray(user.emergencyContacts)) {
+        emergencyContact =user.emergencyContacts[0];
+    }
+
+    // Compatibilidade com dados antigos
+    if (!emergencyContact && user.emergencyContactName) {
+        emergencyContact = {
+            name: user.emergencyContactName,
+            phone: user.emergencyContactPhone || ""
+        };
+    }
+
     if (emergencyContactName) {
-        emergencyContactName.textContent = displayValue(user.emergencyContactName);
+        emergencyContactName.textContent = emergencyContact?.name || "Não informado";
     }
 
     if (emergencyContactPhone) {
-        emergencyContactPhone.textContent = user.emergencyContactPhone || "Telefone não informado";
+        emergencyContactPhone.textContent = emergencyContact?.phone || "Telefone não informado";
     }
 
     // Logout
