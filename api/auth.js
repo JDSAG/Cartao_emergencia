@@ -8,8 +8,14 @@ const pool = new Pool({
     }
 });
 
+// ============================================================
+// UTILITÁRIOS
+// ============================================================
+
 function hashPassword(password) {
-    const salt = crypto.randomBytes(16).toString("hex");
+    const salt = crypto
+        .randomBytes(16)
+        .toString("hex");
 
     const hash = crypto
         .scryptSync(password, salt, 64)
@@ -19,9 +25,16 @@ function hashPassword(password) {
 }
 
 function verifyPassword(password, storedHash) {
+    if (!storedHash) {
+        return false;
+    }
+
     const parts = storedHash.split("$");
 
-    if (parts.length !== 3 || parts[0] !== "scrypt") {
+    if (
+        parts.length !== 3 ||
+        parts[0] !== "scrypt"
+    ) {
         return false;
     }
 
@@ -32,17 +45,22 @@ function verifyPassword(password, storedHash) {
         .scryptSync(password, salt, 64)
         .toString("hex");
 
-    const calculatedBuffer = Buffer.from(
-        calculatedHash,
-        "hex"
-    );
+    const calculatedBuffer =
+        Buffer.from(
+            calculatedHash,
+            "hex"
+        );
 
-    const savedBuffer = Buffer.from(
-        savedHash,
-        "hex"
-    );
+    const savedBuffer =
+        Buffer.from(
+            savedHash,
+            "hex"
+        );
 
-    if (calculatedBuffer.length !== savedBuffer.length) {
+    if (
+        calculatedBuffer.length !==
+        savedBuffer.length
+    ) {
         return false;
     }
 
@@ -53,7 +71,9 @@ function verifyPassword(password, storedHash) {
 }
 
 function createPublicToken() {
-    return crypto.randomBytes(32).toString("hex");
+    return crypto
+        .randomBytes(32)
+        .toString("hex");
 }
 
 function formatUser(user) {
@@ -64,11 +84,21 @@ function formatUser(user) {
         cpf: user.cpf,
         phone: user.phone,
 
-        birthDate: user.birth_date || "",
-        bloodType: user.blood_type || "",
-        allergies: user.allergies || "",
-        medications: user.medications || "",
-        conditions: user.conditions || "",
+        birthDate:
+            user.birth_date || "",
+
+        bloodType:
+            user.blood_type || "",
+
+        allergies:
+            user.allergies || "",
+
+        medications:
+            user.medications || "",
+
+        conditions:
+            user.conditions || "",
+
         neurologicalConditions:
             user.neurological_conditions || "",
 
@@ -80,21 +110,68 @@ function formatUser(user) {
 
         settings: {
             showMedicalInfo:
-                user.show_medical_info ?? true,
+                user.show_medical_info ??
+                true,
 
             publicCard:
-                user.public_card ?? false,
+                user.public_card ??
+                false,
 
             notifications:
-                user.notifications ?? false,
+                user.notifications ??
+                false,
 
             publicToken:
-                user.public_token || null
+                user.public_token ||
+                null
         }
     };
 }
 
-module.exports = async function handler(req, res) {
+function parseBody(req) {
+    let body = req.body || {};
+
+    if (typeof body === "string") {
+        try {
+            body = JSON.parse(body);
+        } catch {
+            return null;
+        }
+    }
+
+    return body;
+}
+
+function normalizeDate(value) {
+    if (!value) {
+        return null;
+    }
+
+    if (
+        typeof value !== "string"
+    ) {
+        return null;
+    }
+
+    if (
+        !/^\d{4}-\d{2}-\d{2}$/.test(
+            value
+        )
+    ) {
+        return null;
+    }
+
+    return value;
+}
+
+// ============================================================
+// HANDLER PRINCIPAL
+// ============================================================
+
+module.exports = async function handler(
+    req,
+    res
+) {
     // CORS
     res.setHeader(
         "Access-Control-Allow-Origin",
@@ -118,76 +195,128 @@ module.exports = async function handler(req, res) {
 
     // Preflight
     if (req.method === "OPTIONS") {
-        return res.status(200).end();
+        return res
+            .status(200)
+            .end();
     }
 
-    const action = req.query?.action;
+    const action =
+        req.query?.action;
 
-    // Teste da conexão com Aiven
+    // ========================================================
+    // TESTE DA CONEXÃO
+    // GET /api/auth
+    // ========================================================
+
     if (
         req.method === "GET" &&
         !action
     ) {
         try {
-            const result = await pool.query(
-                "SELECT NOW() AS horario"
-            );
+            const result =
+                await pool.query(
+                    "SELECT NOW() AS horario"
+                );
 
-            return res.status(200).json({
-                conectado: true,
-                mensagem:
-                    "JavaScript conectado ao PostgreSQL do Aiven.",
-                horario:
-                    result.rows[0].horario
-            });
-
+            return res
+                .status(200)
+                .json({
+                    conectado: true,
+                    mensagem:
+                        "JavaScript conectado ao PostgreSQL do Aiven.",
+                    horario:
+                        result.rows[0]
+                            .horario
+                });
         } catch (error) {
             console.error(
-                "Erro na conexão com o Aiven:",
+                "Erro na conexão com Aiven:",
                 error
             );
 
-            return res.status(500).json({
-                conectado: false,
-                erro: error.message
-            });
+            return res
+                .status(500)
+                .json({
+                    conectado: false,
+                    erro:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
         }
     }
 
-    // Informações médicas
+    // ========================================================
+    // INFORMAÇÕES MÉDICAS
+    // ========================================================
+
     if (action === "medical") {
-        return medical(req, res);
+        return medical(
+            req,
+            res
+        );
     }
 
-    // Cadastro
+    // ========================================================
+    // CADASTRO
+    // ========================================================
+
     if (
         action === "register" &&
         req.method === "POST"
     ) {
-        return register(req, res);
+        return register(
+            req,
+            res
+        );
     }
 
-    // Login
+    // ========================================================
+    // LOGIN
+    // ========================================================
+
     if (
         action === "login" &&
         req.method === "POST"
     ) {
-        return login(req, res);
+        return login(
+            req,
+            res
+        );
     }
 
-    return res.status(405).json({
-        message: "Método ou ação não permitidos."
-    });
+    return res
+        .status(405)
+        .json({
+            message:
+                "Método ou ação não permitidos."
+        });
 };
 
+// ============================================================
+// CADASTRO
+// ============================================================
+
 async function register(req, res) {
+    const body = parseBody(req);
+
+    if (!body) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Dados inválidos."
+            });
+    }
+
     const {
         name,
         email,
         cpf,
         phone,
         password
-    } = req.body || {};
+    } = body;
 
     if (
         !name ||
@@ -196,26 +325,35 @@ async function register(req, res) {
         !phone ||
         !password
     ) {
-        return res.status(400).json({
-            message:
-                "Preencha todos os campos obrigatórios."
-        });
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Preencha todos os campos obrigatórios."
+            });
     }
 
-    if (password.length < 6) {
-        return res.status(400).json({
-            message:
-                "A senha deve possuir pelo menos 6 caracteres."
-        });
+    if (
+        password.length < 6
+    ) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "A senha deve possuir pelo menos 6 caracteres."
+            });
     }
 
     const emailNormalized =
-        email.trim().toLowerCase();
+        email
+            .trim()
+            .toLowerCase();
 
     const cpfNormalized =
         cpf.trim();
 
-    const client = await pool.connect();
+    const client =
+        await pool.connect();
 
     try {
         const existingUser =
@@ -233,7 +371,10 @@ async function register(req, res) {
                 ]
             );
 
-        if (existingUser.rows.length > 0) {
+        if (
+            existingUser.rows
+                .length > 0
+        ) {
             const existing =
                 existingUser.rows[0];
 
@@ -241,27 +382,30 @@ async function register(req, res) {
                 existing.email ===
                 emailNormalized
             ) {
-                return res.status(409).json({
-                    message:
-                        "Já existe uma conta cadastrada com este e-mail."
-                });
+                return res
+                    .status(409)
+                    .json({
+                        message:
+                            "Já existe uma conta cadastrada com este e-mail."
+                    });
             }
 
-            if (
-                existing.cpf ===
-                cpfNormalized
-            ) {
-                return res.status(409).json({
+            return res
+                .status(409)
+                .json({
                     message:
                         "Já existe uma conta cadastrada com este CPF."
                 });
-            }
         }
 
-        await client.query("BEGIN");
+        await client.query(
+            "BEGIN"
+        );
 
         const passwordHash =
-            hashPassword(password);
+            hashPassword(
+                password
+            );
 
         const publicToken =
             createPublicToken();
@@ -310,59 +454,100 @@ async function register(req, res) {
             [user.id]
         );
 
-        await client.query("COMMIT");
+        await client.query(
+            "COMMIT"
+        );
 
         console.log(
             "Usuário criado:",
             user.id
         );
 
-        return res.status(201).json({
-            message:
-                "Conta criada com sucesso.",
-            user: formatUser(user)
-        });
+        return res
+            .status(201)
+            .json({
+                message:
+                    "Conta criada com sucesso.",
+                user:
+                    formatUser(user)
+            });
 
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query(
+            "ROLLBACK"
+        );
 
         console.error(
             "Erro ao cadastrar usuário:",
             error
         );
 
-        if (error.code === "23505") {
-            return res.status(409).json({
-                message:
-                    "E-mail ou CPF já cadastrado."
-            });
+        if (
+            error.code ===
+            "23505"
+        ) {
+            return res
+                .status(409)
+                .json({
+                    message:
+                        "E-mail ou CPF já cadastrado."
+                });
         }
 
-        return res.status(500).json({
-            message:
-                "Erro ao criar sua conta."
-        });
+        return res
+            .status(500)
+            .json({
+                message:
+                    "Erro ao criar sua conta.",
+                error:
+                    error.message,
+                code:
+                    error.code ||
+                    null
+            });
 
     } finally {
         client.release();
     }
 }
 
+// ============================================================
+// LOGIN
+// ============================================================
+
 async function login(req, res) {
+    const body = parseBody(req);
+
+    if (!body) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Dados inválidos."
+            });
+    }
+
     const {
         email,
         password
-    } = req.body || {};
+    } = body;
 
-    if (!email || !password) {
-        return res.status(400).json({
-            message:
-                "Preencha todos os campos."
-        });
+    if (
+        !email ||
+        !password
+    ) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Preencha todos os campos."
+            });
     }
 
     const emailNormalized =
-        email.trim().toLowerCase();
+        email
+            .trim()
+            .toLowerCase();
 
     try {
         const result =
@@ -407,11 +592,15 @@ async function login(req, res) {
                 [emailNormalized]
             );
 
-        if (result.rows.length === 0) {
-            return res.status(401).json({
-                message:
-                    "E-mail ou senha incorretos."
-            });
+        if (
+            result.rows.length === 0
+        ) {
+            return res
+                .status(401)
+                .json({
+                    message:
+                        "E-mail ou senha incorretos."
+                });
         }
 
         const user =
@@ -424,10 +613,12 @@ async function login(req, res) {
             );
 
         if (!validPassword) {
-            return res.status(401).json({
-                message:
-                    "E-mail ou senha incorretos."
-            });
+            return res
+                .status(401)
+                .json({
+                    message:
+                        "E-mail ou senha incorretos."
+                });
         }
 
         console.log(
@@ -435,11 +626,14 @@ async function login(req, res) {
             user.id
         );
 
-        return res.status(200).json({
-            message:
-                "Login realizado com sucesso.",
-            user: formatUser(user)
-        });
+        return res
+            .status(200)
+            .json({
+                message:
+                    "Login realizado com sucesso.",
+                user:
+                    formatUser(user)
+            });
 
     } catch (error) {
         console.error(
@@ -447,35 +641,86 @@ async function login(req, res) {
             error
         );
 
-        return res.status(500).json({
-            message:
-                "Erro ao realizar login."
-        });
+        return res
+            .status(500)
+            .json({
+                message:
+                    "Erro ao realizar login.",
+                error:
+                    error.message,
+                code:
+                    error.code ||
+                    null
+            });
     }
 }
+
+// ============================================================
+// INFORMAÇÕES MÉDICAS
+// ============================================================
 
 async function medical(req, res) {
     let userId;
 
-    if (req.method === "GET") {
+    // ========================================================
+    // GET → CARREGAR
+    // /api/auth?action=medical&userId=1
+    // ========================================================
+
+    if (
+        req.method === "GET"
+    ) {
         userId = Number(
             req.query?.userId
         );
-    } else {
+    }
+
+    // ========================================================
+    // PUT → SALVAR
+    // /api/auth?action=medical
+    // ========================================================
+
+    if (
+        req.method === "PUT" ||
+        req.method === "POST"
+    ) {
+        const body =
+            parseBody(req);
+
+        if (!body) {
+            return res
+                .status(400)
+                .json({
+                    message:
+                        "Dados inválidos."
+                });
+        }
+
         userId = Number(
-            req.body?.userId
+            body.userId
         );
     }
 
-    if (!Number.isInteger(userId) || userId <= 0) {
-        return res.status(400).json({
-            message:
-                "Usuário inválido."
-        });
+    if (
+        !Number.isInteger(userId) ||
+        userId <= 0
+    ) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Usuário inválido."
+            });
     }
 
-    try {
-        if (req.method === "GET") {
+    // ========================================================
+    // CARREGAR DADOS
+    // ========================================================
+
+    if (
+        req.method === "GET"
+    ) {
+        try {
             const result =
                 await pool.query(
                     `
@@ -484,14 +729,21 @@ async function medical(req, res) {
                         u.name,
                         u.email,
                         u.phone,
-                        u.birth_date,
+                        TO_CHAR(
+                            u.birth_date,
+                            'YYYY-MM-DD'
+                        ) AS birth_date,
 
                         m.blood_type,
                         m.allergies,
                         m.medications,
                         m.conditions,
                         m.neurological_conditions,
-                        m.card_validation_date
+
+                        TO_CHAR(
+                            m.card_validation_date,
+                            'YYYY-MM-DD'
+                        ) AS card_validation_date
 
                     FROM users u
 
@@ -500,229 +752,314 @@ async function medical(req, res) {
 
                     WHERE u.id = $1
 
-                    LIMIT 1
-                    `,
-                    [userId]
-                );
-
-            if (result.rows.length === 0) {
-                return res.status(404).json({
-                    message:
-                        "Usuário não encontrado."
-                });
-            }
-
-            const data =
-                result.rows[0];
-
-            return res.status(200).json({
-                medical: {
-                    birthDate:
-                        data.birth_date || "",
-
-                    bloodType:
-                        data.blood_type || "",
-
-                    allergies:
-                        data.allergies || "",
-
-                    medications:
-                        data.medications || "",
-
-                    conditions:
-                        data.conditions || "",
-
-                    neurologicalConditions:
-                        data.neurological_conditions || "",
-
-                    cardValidationDate:
-                        data.card_validation_date || ""
-                }
-            });
-        }
-
-        if (
-            req.method !== "PUT" &&
-            req.method !== "POST"
-        ) {
-            return res.status(405).json({
-                message:
-                    "Método não permitido."
-            });
-        }
-
-        const {
-            birthDate,
-            bloodType,
-            allergies,
-            medications,
-            conditions,
-            neurologicalConditions,
-            cardValidationDate
-        } = req.body || {};
-
-        const client =
-            await pool.connect();
-
-        try {
-            await client.query("BEGIN");
-
-            const userResult =
-                await client.query(
-                    `
-                    SELECT id
-                    FROM users
-                    WHERE id = $1
                     LIMIT 1
                     `,
                     [userId]
                 );
 
             if (
-                userResult.rows.length === 0
+                result.rows.length === 0
             ) {
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(404).json({
-                    message:
-                        "Usuário não encontrado."
-                });
+                return res
+                    .status(404)
+                    .json({
+                        message:
+                            "Usuário não encontrado."
+                    });
             }
 
-            await client.query(
-                `
-                UPDATE users
-                SET birth_date = $1
-                WHERE id = $2
-                `,
-                [
-                    birthDate || null,
-                    userId
-                ]
-            );
+            const data =
+                result.rows[0];
 
-            await client.query(
-                `
-                INSERT INTO medical_info (
-                    user_id,
-                    blood_type,
-                    allergies,
-                    medications,
-                    conditions,
-                    neurological_conditions,
-                    card_validation_date
-                )
-                VALUES (
-                    $1,
-                    $2,
-                    $3,
-                    $4,
-                    $5,
-                    $6,
-                    $7
-                )
-                ON CONFLICT (user_id)
-                DO UPDATE SET
-                    blood_type = EXCLUDED.blood_type,
-                    allergies = EXCLUDED.allergies,
-                    medications = EXCLUDED.medications,
-                    conditions = EXCLUDED.conditions,
-                    neurological_conditions =
-                        EXCLUDED.neurological_conditions,
-                    card_validation_date =
-                        EXCLUDED.card_validation_date
-                `,
-                [
-                    userId,
-                    bloodType || "",
-                    allergies || "",
-                    medications || "",
-                    conditions || "",
-                    neurologicalConditions || "",
-                    cardValidationDate || null
-                ]
-            );
+            return res
+                .status(200)
+                .json({
+                    medical: {
+                        birthDate:
+                            data.birth_date ||
+                            "",
 
-            await client.query("COMMIT");
+                        bloodType:
+                            data.blood_type ||
+                            "",
 
-            const result =
-                await pool.query(
-                    `
-                    SELECT
-                        u.*,
+                        allergies:
+                            data.allergies ||
+                            "",
 
-                        m.blood_type,
-                        m.allergies,
-                        m.medications,
-                        m.conditions,
-                        m.neurological_conditions,
-                        m.card_validation_date,
+                        medications:
+                            data.medications ||
+                            "",
 
-                        COALESCE(
-                            (
-                                SELECT json_agg(
-                                    json_build_object(
-                                        'id', ec.id,
-                                        'name', ec.name,
-                                        'phone', ec.phone,
-                                        'relationship', ec.relationship
-                                    )
-                                    ORDER BY ec.id
-                                )
-                                FROM emergency_contacts ec
-                                WHERE ec.user_id = u.id
-                            ),
-                            '[]'::json
-                        ) AS emergency_contacts
+                        conditions:
+                            data.conditions ||
+                            "",
 
-                    FROM users u
+                        neurologicalConditions:
+                            data.neurological_conditions ||
+                            "",
 
-                    LEFT JOIN medical_info m
-                        ON m.user_id = u.id
-
-                    WHERE u.id = $1
-
-                    LIMIT 1
-                    `,
-                    [userId]
-                );
-
-            return res.status(200).json({
-                message:
-                    "Informações médicas salvas com sucesso.",
-                user:
-                    formatUser(result.rows[0])
-            });
+                        cardValidationDate:
+                            data.card_validation_date ||
+                            ""
+                    }
+                });
 
         } catch (error) {
+            console.error(
+                "Erro ao carregar informações médicas:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    message:
+                        "Erro ao acessar as informações médicas.",
+                    error:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
+        }
+    }
+
+    // ========================================================
+    // SALVAR DADOS
+    // ========================================================
+
+    if (
+        req.method !== "PUT" &&
+        req.method !== "POST"
+    ) {
+        return res
+            .status(405)
+            .json({
+                message:
+                    "Método não permitido."
+            });
+    }
+
+    const body =
+        parseBody(req);
+
+    if (!body) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Dados inválidos."
+            });
+    }
+
+    const {
+        birthDate,
+        bloodType,
+        allergies,
+        medications,
+        conditions,
+        neurologicalConditions,
+        cardValidationDate
+    } = body;
+
+    const validBirthDate =
+        normalizeDate(
+            birthDate
+        );
+
+    const validCardDate =
+        normalizeDate(
+            cardValidationDate
+        );
+
+    const client =
+        await pool.connect();
+
+    try {
+        await client.query(
+            "BEGIN"
+        );
+
+        // Verificar usuário
+        const userResult =
+            await client.query(
+                `
+                SELECT id
+                FROM users
+                WHERE id = $1
+                LIMIT 1
+                `,
+                [userId]
+            );
+
+        if (
+            userResult.rows.length === 0
+        ) {
             await client.query(
                 "ROLLBACK"
             );
 
-            console.error(
-                "Erro ao salvar informações médicas:",
-                error
+            return res
+                .status(404)
+                .json({
+                    message:
+                        "Usuário não encontrado."
+                });
+        }
+
+        // Atualizar nascimento
+        await client.query(
+            `
+            UPDATE users
+            SET birth_date = $1
+            WHERE id = $2
+            `,
+            [
+                validBirthDate,
+                userId
+            ]
+        );
+
+        // Atualizar informações médicas
+        await client.query(
+            `
+            INSERT INTO medical_info (
+                user_id,
+                blood_type,
+                allergies,
+                medications,
+                conditions,
+                neurological_conditions,
+                card_validation_date
+            )
+            VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7
+            )
+            ON CONFLICT (user_id)
+            DO UPDATE SET
+                blood_type =
+                    EXCLUDED.blood_type,
+
+                allergies =
+                    EXCLUDED.allergies,
+
+                medications =
+                    EXCLUDED.medications,
+
+                conditions =
+                    EXCLUDED.conditions,
+
+                neurological_conditions =
+                    EXCLUDED.neurological_conditions,
+
+                card_validation_date =
+                    EXCLUDED.card_validation_date
+            `,
+            [
+                userId,
+                bloodType || "",
+                allergies || "",
+                medications || "",
+                conditions || "",
+                neurologicalConditions || "",
+                validCardDate
+            ]
+        );
+
+        await client.query(
+            "COMMIT"
+        );
+
+        // Buscar usuário atualizado
+        const result =
+            await pool.query(
+                `
+                SELECT
+                    u.*,
+
+                    m.blood_type,
+                    m.allergies,
+                    m.medications,
+                    m.conditions,
+                    m.neurological_conditions,
+                    m.card_validation_date,
+
+                    COALESCE(
+                        (
+                            SELECT json_agg(
+                                json_build_object(
+                                    'id', ec.id,
+                                    'name', ec.name,
+                                    'phone', ec.phone,
+                                    'relationship', ec.relationship
+                                )
+                                ORDER BY ec.id
+                            )
+                            FROM emergency_contacts ec
+                            WHERE ec.user_id = u.id
+                        ),
+                        '[]'::json
+                    ) AS emergency_contacts
+
+                FROM users u
+
+                LEFT JOIN medical_info m
+                    ON m.user_id = u.id
+
+                WHERE u.id = $1
+
+                LIMIT 1
+                `,
+                [userId]
             );
 
-            return res.status(500).json({
+        console.log(
+            "Informações médicas salvas:",
+            userId
+        );
+
+        return res
+            .status(200)
+            .json({
                 message:
-                    "Erro ao salvar as informações médicas."
+                    "Informações médicas salvas com sucesso.",
+
+                user:
+                    formatUser(
+                        result.rows[0]
+                    )
             });
 
-        } finally {
-            client.release();
-        }
     } catch (error) {
+        await client.query(
+            "ROLLBACK"
+        );
+
         console.error(
-            "Erro nas informações médicas:",
+            "Erro ao salvar informações médicas:",
             error
         );
 
-        return res.status(500).json({
-            message:
-                "Erro ao acessar as informações médicas."
-        });
+        return res
+            .status(500)
+            .json({
+                message:
+                    "Erro ao salvar as informações médicas.",
+                error:
+                    error.message,
+                code:
+                    error.code ||
+                    null
+            });
+
+    } finally {
+        client.release();
     }
 }
