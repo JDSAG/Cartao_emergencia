@@ -1,12 +1,8 @@
 const { Pool } = require("pg");
 const crypto = require("crypto");
 
-const databaseUrl = process.env.DATABASE_URL
-    .replace("?sslmode=require", "")
-    .replace("&sslmode=require", "");
-
 const pool = new Pool({
-    connectionString: databaseUrl,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
     }
@@ -107,7 +103,7 @@ module.exports = async function handler(req, res) {
 
     res.setHeader(
         "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS"
+        "GET, POST, PUT, OPTIONS"
     );
 
     res.setHeader(
@@ -120,13 +116,18 @@ module.exports = async function handler(req, res) {
         "application/json"
     );
 
-    // Preflight CORS
+    // Preflight
     if (req.method === "OPTIONS") {
         return res.status(200).end();
     }
 
+    const action = req.query?.action;
+
     // Teste da conexão com Aiven
-    if (req.method === "GET") {
+    if (
+        req.method === "GET" &&
+        !action
+    ) {
         try {
             const result = await pool.query(
                 "SELECT NOW() AS horario"
@@ -153,24 +154,29 @@ module.exports = async function handler(req, res) {
         }
     }
 
-    if (req.method !== "POST") {
-        return res.status(405).json({
-            message: "Método não permitido."
-        });
+    // Informações médicas
+    if (action === "medical") {
+        return medical(req, res);
     }
 
-    const action = req.query?.action;
-
-    if (action === "register") {
+    // Cadastro
+    if (
+        action === "register" &&
+        req.method === "POST"
+    ) {
         return register(req, res);
     }
 
-    if (action === "login") {
+    // Login
+    if (
+        action === "login" &&
+        req.method === "POST"
+    ) {
         return login(req, res);
     }
 
-    return res.status(400).json({
-        message: "Ação inválida."
+    return res.status(405).json({
+        message: "Método ou ação não permitidos."
     });
 };
 
@@ -444,6 +450,279 @@ async function login(req, res) {
         return res.status(500).json({
             message:
                 "Erro ao realizar login."
+        });
+    }
+}
+
+async function medical(req, res) {
+    let userId;
+
+    if (req.method === "GET") {
+        userId = Number(
+            req.query?.userId
+        );
+    } else {
+        userId = Number(
+            req.body?.userId
+        );
+    }
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+        return res.status(400).json({
+            message:
+                "Usuário inválido."
+        });
+    }
+
+    try {
+        if (req.method === "GET") {
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        u.id,
+                        u.name,
+                        u.email,
+                        u.phone,
+                        u.birth_date,
+
+                        m.blood_type,
+                        m.allergies,
+                        m.medications,
+                        m.conditions,
+                        m.neurological_conditions,
+                        m.card_validation_date
+
+                    FROM users u
+
+                    LEFT JOIN medical_info m
+                        ON m.user_id = u.id
+
+                    WHERE u.id = $1
+
+                    LIMIT 1
+                    `,
+                    [userId]
+                );
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({
+                    message:
+                        "Usuário não encontrado."
+                });
+            }
+
+            const data =
+                result.rows[0];
+
+            return res.status(200).json({
+                medical: {
+                    birthDate:
+                        data.birth_date || "",
+
+                    bloodType:
+                        data.blood_type || "",
+
+                    allergies:
+                        data.allergies || "",
+
+                    medications:
+                        data.medications || "",
+
+                    conditions:
+                        data.conditions || "",
+
+                    neurologicalConditions:
+                        data.neurological_conditions || "",
+
+                    cardValidationDate:
+                        data.card_validation_date || ""
+                }
+            });
+        }
+
+        if (
+            req.method !== "PUT" &&
+            req.method !== "POST"
+        ) {
+            return res.status(405).json({
+                message:
+                    "Método não permitido."
+            });
+        }
+
+        const {
+            birthDate,
+            bloodType,
+            allergies,
+            medications,
+            conditions,
+            neurologicalConditions,
+            cardValidationDate
+        } = req.body || {};
+
+        const client =
+            await pool.connect();
+
+        try {
+            await client.query("BEGIN");
+
+            const userResult =
+                await client.query(
+                    `
+                    SELECT id
+                    FROM users
+                    WHERE id = $1
+                    LIMIT 1
+                    `,
+                    [userId]
+                );
+
+            if (
+                userResult.rows.length === 0
+            ) {
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+                    message:
+                        "Usuário não encontrado."
+                });
+            }
+
+            await client.query(
+                `
+                UPDATE users
+                SET birth_date = $1
+                WHERE id = $2
+                `,
+                [
+                    birthDate || null,
+                    userId
+                ]
+            );
+
+            await client.query(
+                `
+                INSERT INTO medical_info (
+                    user_id,
+                    blood_type,
+                    allergies,
+                    medications,
+                    conditions,
+                    neurological_conditions,
+                    card_validation_date
+                )
+                VALUES (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5,
+                    $6,
+                    $7
+                )
+                ON CONFLICT (user_id)
+                DO UPDATE SET
+                    blood_type = EXCLUDED.blood_type,
+                    allergies = EXCLUDED.allergies,
+                    medications = EXCLUDED.medications,
+                    conditions = EXCLUDED.conditions,
+                    neurological_conditions =
+                        EXCLUDED.neurological_conditions,
+                    card_validation_date =
+                        EXCLUDED.card_validation_date
+                `,
+                [
+                    userId,
+                    bloodType || "",
+                    allergies || "",
+                    medications || "",
+                    conditions || "",
+                    neurologicalConditions || "",
+                    cardValidationDate || null
+                ]
+            );
+
+            await client.query("COMMIT");
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        u.*,
+
+                        m.blood_type,
+                        m.allergies,
+                        m.medications,
+                        m.conditions,
+                        m.neurological_conditions,
+                        m.card_validation_date,
+
+                        COALESCE(
+                            (
+                                SELECT json_agg(
+                                    json_build_object(
+                                        'id', ec.id,
+                                        'name', ec.name,
+                                        'phone', ec.phone,
+                                        'relationship', ec.relationship
+                                    )
+                                    ORDER BY ec.id
+                                )
+                                FROM emergency_contacts ec
+                                WHERE ec.user_id = u.id
+                            ),
+                            '[]'::json
+                        ) AS emergency_contacts
+
+                    FROM users u
+
+                    LEFT JOIN medical_info m
+                        ON m.user_id = u.id
+
+                    WHERE u.id = $1
+
+                    LIMIT 1
+                    `,
+                    [userId]
+                );
+
+            return res.status(200).json({
+                message:
+                    "Informações médicas salvas com sucesso.",
+                user:
+                    formatUser(result.rows[0])
+            });
+
+        } catch (error) {
+            await client.query(
+                "ROLLBACK"
+            );
+
+            console.error(
+                "Erro ao salvar informações médicas:",
+                error
+            );
+
+            return res.status(500).json({
+                message:
+                    "Erro ao salvar as informações médicas."
+            });
+
+        } finally {
+            client.release();
+        }
+    } catch (error) {
+        console.error(
+            "Erro nas informações médicas:",
+            error
+        );
+
+        return res.status(500).json({
+            message:
+                "Erro ao acessar as informações médicas."
         });
     }
 }
