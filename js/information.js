@@ -9,12 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const userData =
-        localStorage.getItem(
-            "medalert_current_user"
-        ) ||
-        localStorage.getItem(
-            "medalert_user"
-        );
+        localStorage.getItem("medalert_current_user") ||
+        localStorage.getItem("medalert_user");
 
     if (!userData) {
         window.location.href = "login.html";
@@ -168,9 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             otherNeurologicalCondition.value = "";
         }
 
-        if (
-            data.neurologicalConditions
-        ) {
+        if (data.neurologicalConditions) {
             const savedConditions =
                 data.neurologicalConditions
                     .split(",")
@@ -242,9 +236,18 @@ document.addEventListener("DOMContentLoaded", () => {
             getInitials(fullName);
     }
 
-    // Carregar informações do banco
+    // ========================================================
+    // CARREGAR INFORMAÇÕES MÉDICAS
+    // ========================================================
+
     async function loadMedicalData() {
         try {
+            if (!user.id) {
+                throw new Error(
+                    "Usuário sem ID."
+                );
+            }
+
             const response =
                 await fetch(
                     `${API_URL}?action=medical&userId=${encodeURIComponent(
@@ -252,49 +255,65 @@ document.addEventListener("DOMContentLoaded", () => {
                     )}`
                 );
 
-            const data =
-                await response.json();
+            const responseText =
+                await response.text();
 
-            if (!response.ok) {
+            console.log(
+                "Resposta ao carregar informações médicas:",
+                response.status,
+                responseText
+            );
+
+            let data = {};
+
+            try {
+                data = responseText
+                    ? JSON.parse(responseText)
+                    : {};
+            } catch {
                 throw new Error(
-                    data.message ||
-                    "Não foi possível carregar as informações."
+                    `O servidor retornou uma resposta inválida: ${responseText.substring(
+                        0,
+                        300
+                    )}`
                 );
             }
 
-            loadFormData(
-                data.medical || {}
-            );
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Não foi possível carregar as informações médicas."
+                );
+            }
+
+            const medical =
+                data.medical || {};
+
+            loadFormData(medical);
 
             saveUserLocally({
                 birthDate:
-                    data.medical?.birthDate ||
-                    "",
+                    medical.birthDate || "",
 
                 bloodType:
-                    data.medical?.bloodType ||
-                    "",
+                    medical.bloodType || "",
 
                 allergies:
-                    data.medical?.allergies ||
-                    "",
+                    medical.allergies || "",
 
                 medications:
-                    data.medical?.medications ||
-                    "",
+                    medical.medications || "",
 
                 conditions:
-                    data.medical?.conditions ||
-                    "",
+                    medical.conditions || "",
 
                 neurologicalConditions:
-                    data.medical
-                        ?.neurologicalConditions ||
+                    medical.neurologicalConditions ||
                     "",
 
                 cardValidationDate:
-                    data.medical
-                        ?.cardValidationDate ||
+                    medical.cardValidationDate ||
                     ""
             });
 
@@ -304,14 +323,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-            // Mantém os dados locais como fallback
+            showMessage(
+                error.message ||
+                "Não foi possível carregar as informações médicas.",
+                "error"
+            );
+
+            // Fallback para os dados locais
             loadFormData(user);
         }
     }
 
     loadMedicalData();
 
-    // Opção "nenhuma"
+    // ========================================================
+    // CONDIÇÕES NEUROLÓGICAS
+    // ========================================================
+
     neurologicalConditions.forEach(
         checkbox => {
             checkbox.addEventListener(
@@ -362,7 +390,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-    // Salvar formulário
+    // ========================================================
+    // SALVAR FORMULÁRIO
+    // ========================================================
+
     if (form) {
         form.addEventListener(
             "submit",
@@ -401,7 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         .split("T")[0];
 
                 const medicalData = {
-                    userId: user.id,
+                    userId: Number(user.id),
 
                     birthDate:
                         birthDate
@@ -437,6 +468,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         currentDate
                 };
 
+                if (
+                    !Number.isInteger(
+                        medicalData.userId
+                    ) ||
+                    medicalData.userId <= 0
+                ) {
+                    showMessage(
+                        "Usuário inválido. Faça login novamente.",
+                        "error"
+                    );
+
+                    return;
+                }
+
                 const submitButton =
                     form.querySelector(
                         'button[type="submit"]'
@@ -445,18 +490,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (submitButton) {
                     submitButton.disabled =
                         true;
+
+                    submitButton.textContent =
+                        "Salvando...";
                 }
 
                 try {
+                    console.log(
+                        "Enviando informações médicas:",
+                        medicalData
+                    );
+
                     const response =
                         await fetch(
                             `${API_URL}?action=medical`,
                             {
                                 method: "PUT",
+
                                 headers: {
                                     "Content-Type":
                                         "application/json"
                                 },
+
                                 body:
                                     JSON.stringify(
                                         medicalData
@@ -464,19 +519,68 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
                         );
 
-                    const data =
-                        await response.json();
+                    const responseText =
+                        await response.text();
 
-                    if (!response.ok) {
+                    console.log(
+                        "Resposta ao salvar informações médicas:",
+                        response.status,
+                        responseText
+                    );
+
+                    let data = {};
+
+                    try {
+                        data = responseText
+                            ? JSON.parse(
+                                  responseText
+                              )
+                            : {};
+                    } catch {
                         throw new Error(
-                            data.message ||
-                            "Não foi possível salvar as informações."
+                            `O servidor retornou uma resposta inválida: ${responseText.substring(
+                                0,
+                                300
+                            )}`
                         );
                     }
 
-                    saveUserLocally(
-                        data.user
-                    );
+                    if (!response.ok) {
+                        throw new Error(
+                            data.error ||
+                            data.message ||
+                            "Não foi possível salvar as informações médicas."
+                        );
+                    }
+
+                    if (data.user) {
+                        saveUserLocally(
+                            data.user
+                        );
+                    } else {
+                        saveUserLocally({
+                            birthDate:
+                                medicalData.birthDate,
+
+                            bloodType:
+                                medicalData.bloodType,
+
+                            allergies:
+                                medicalData.allergies,
+
+                            medications:
+                                medicalData.medications,
+
+                            conditions:
+                                medicalData.conditions,
+
+                            neurologicalConditions:
+                                medicalData.neurologicalConditions,
+
+                            cardValidationDate:
+                                medicalData.cardValidationDate
+                        });
+                    }
 
                     showMessage(
                         "Informações salvas com sucesso!",
@@ -496,20 +600,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     showMessage(
                         error.message ||
-                        "Não foi possível salvar as informações."
+                        "Não foi possível salvar as informações.",
+                        "error"
                     );
 
                 } finally {
                     if (submitButton) {
                         submitButton.disabled =
                             false;
+
+                        submitButton.textContent =
+                            "Salvar informações";
                     }
                 }
             }
         );
     }
 
-    // Logout
+    // ========================================================
+    // LOGOUT
+    // ========================================================
+
     const logoutButton =
         document.getElementById(
             "logoutButton"
