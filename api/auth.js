@@ -12,7 +12,6 @@ databaseUrl.searchParams.delete("sslrootcert");
 
 const pool = new Pool({
     connectionString: databaseUrl.toString(),
-
     ssl: {
         rejectUnauthorized: false
     }
@@ -86,6 +85,35 @@ function createPublicToken() {
         .toString("hex");
 }
 
+function parseBody(req) {
+    let body = req.body || {};
+
+    if (typeof body === "string") {
+        try {
+            body = JSON.parse(body);
+        } catch {
+            return null;
+        }
+    }
+
+    return body;
+}
+
+function normalizeDate(value) {
+    if (!value) {
+        return null;
+    }
+
+    if (
+        typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+        return null;
+    }
+
+    return value;
+}
+
 function formatUser(user) {
     return {
         id: user.id,
@@ -120,69 +148,25 @@ function formatUser(user) {
 
         settings: {
             showMedicalInfo:
-                user.show_medical_info ??
-                true,
+                user.show_medical_info ?? true,
 
             publicCard:
-                user.public_card ??
-                false,
+                user.public_card ?? false,
 
             notifications:
-                user.notifications ??
-                false,
+                user.notifications ?? false,
 
             publicToken:
-                user.public_token ||
-                null
+                user.public_token || null
         }
     };
-}
-
-function parseBody(req) {
-    let body = req.body || {};
-
-    if (typeof body === "string") {
-        try {
-            body = JSON.parse(body);
-        } catch {
-            return null;
-        }
-    }
-
-    return body;
-}
-
-function normalizeDate(value) {
-    if (!value) {
-        return null;
-    }
-
-    if (
-        typeof value !== "string"
-    ) {
-        return null;
-    }
-
-    if (
-        !/^\d{4}-\d{2}-\d{2}$/.test(
-            value
-        )
-    ) {
-        return null;
-    }
-
-    return value;
 }
 
 // ============================================================
 // HANDLER PRINCIPAL
 // ============================================================
 
-module.exports = async function handler(
-    req,
-    res
-) {
-    // CORS
+module.exports = async function handler(req, res) {
     res.setHeader(
         "Access-Control-Allow-Origin",
         "*"
@@ -190,7 +174,7 @@ module.exports = async function handler(
 
     res.setHeader(
         "Access-Control-Allow-Methods",
-        "GET, POST, PUT, OPTIONS"
+        "GET, POST, PUT, DELETE, OPTIONS"
     );
 
     res.setHeader(
@@ -203,7 +187,6 @@ module.exports = async function handler(
         "application/json"
     );
 
-    // Preflight
     if (req.method === "OPTIONS") {
         return res
             .status(200)
@@ -238,6 +221,7 @@ module.exports = async function handler(
                         result.rows[0]
                             .horario
                 });
+
         } catch (error) {
             console.error(
                 "Erro na conexão com Aiven:",
@@ -263,6 +247,17 @@ module.exports = async function handler(
 
     if (action === "medical") {
         return medical(
+            req,
+            res
+        );
+    }
+
+    // ========================================================
+    // CONTATOS
+    // ========================================================
+
+    if (action === "contacts") {
+        return contacts(
             req,
             res
         );
@@ -309,7 +304,8 @@ module.exports = async function handler(
 // ============================================================
 
 async function register(req, res) {
-    const body = parseBody(req);
+    const body =
+        parseBody(req);
 
     if (!body) {
         return res
@@ -382,8 +378,7 @@ async function register(req, res) {
             );
 
         if (
-            existingUser.rows
-                .length > 0
+            existingUser.rows.length > 0
         ) {
             const existing =
                 existingUser.rows[0];
@@ -493,8 +488,7 @@ async function register(req, res) {
         );
 
         if (
-            error.code ===
-            "23505"
+            error.code === "23505"
         ) {
             return res
                 .status(409)
@@ -526,7 +520,8 @@ async function register(req, res) {
 // ============================================================
 
 async function login(req, res) {
-    const body = parseBody(req);
+    const body =
+        parseBody(req);
 
     if (!body) {
         return res
@@ -580,7 +575,8 @@ async function login(req, res) {
                                     'id', ec.id,
                                     'name', ec.name,
                                     'phone', ec.phone,
-                                    'relationship', ec.relationship
+                                    'relationship', ec.relationship,
+                                    'email', ec.email
                                 )
                                 ORDER BY ec.id
                             )
@@ -670,12 +666,10 @@ async function login(req, res) {
 // ============================================================
 
 async function medical(req, res) {
-    let userId;
+    const body =
+        parseBody(req);
 
-    // ========================================================
-    // GET → CARREGAR
-    // /api/auth?action=medical&userId=1
-    // ========================================================
+    let userId;
 
     if (
         req.method === "GET"
@@ -683,31 +677,9 @@ async function medical(req, res) {
         userId = Number(
             req.query?.userId
         );
-    }
-
-    // ========================================================
-    // PUT → SALVAR
-    // /api/auth?action=medical
-    // ========================================================
-
-    if (
-        req.method === "PUT" ||
-        req.method === "POST"
-    ) {
-        const body =
-            parseBody(req);
-
-        if (!body) {
-            return res
-                .status(400)
-                .json({
-                    message:
-                        "Dados inválidos."
-                });
-        }
-
+    } else {
         userId = Number(
-            body.userId
+            body?.userId
         );
     }
 
@@ -724,7 +696,7 @@ async function medical(req, res) {
     }
 
     // ========================================================
-    // CARREGAR DADOS
+    // GET
     // ========================================================
 
     if (
@@ -739,6 +711,7 @@ async function medical(req, res) {
                         u.name,
                         u.email,
                         u.phone,
+
                         TO_CHAR(
                             u.birth_date,
                             'YYYY-MM-DD'
@@ -836,7 +809,7 @@ async function medical(req, res) {
     }
 
     // ========================================================
-    // SALVAR DADOS
+    // PUT / POST
     // ========================================================
 
     if (
@@ -850,9 +823,6 @@ async function medical(req, res) {
                     "Método não permitido."
             });
     }
-
-    const body =
-        parseBody(req);
 
     if (!body) {
         return res
@@ -873,16 +843,6 @@ async function medical(req, res) {
         cardValidationDate
     } = body;
 
-    const validBirthDate =
-        normalizeDate(
-            birthDate
-        );
-
-    const validCardDate =
-        normalizeDate(
-            cardValidationDate
-        );
-
     const client =
         await pool.connect();
 
@@ -891,7 +851,6 @@ async function medical(req, res) {
             "BEGIN"
         );
 
-        // Verificar usuário
         const userResult =
             await client.query(
                 `
@@ -918,7 +877,6 @@ async function medical(req, res) {
                 });
         }
 
-        // Atualizar nascimento
         await client.query(
             `
             UPDATE users
@@ -926,12 +884,13 @@ async function medical(req, res) {
             WHERE id = $2
             `,
             [
-                validBirthDate,
+                normalizeDate(
+                    birthDate
+                ),
                 userId
             ]
         );
 
-        // Atualizar informações médicas
         await client.query(
             `
             INSERT INTO medical_info (
@@ -979,7 +938,9 @@ async function medical(req, res) {
                 medications || "",
                 conditions || "",
                 neurologicalConditions || "",
-                validCardDate
+                normalizeDate(
+                    cardValidationDate
+                )
             ]
         );
 
@@ -987,7 +948,6 @@ async function medical(req, res) {
             "COMMIT"
         );
 
-        // Buscar usuário atualizado
         const result =
             await pool.query(
                 `
@@ -1008,7 +968,8 @@ async function medical(req, res) {
                                     'id', ec.id,
                                     'name', ec.name,
                                     'phone', ec.phone,
-                                    'relationship', ec.relationship
+                                    'relationship', ec.relationship,
+                                    'email', ec.email
                                 )
                                 ORDER BY ec.id
                             )
@@ -1030,17 +991,11 @@ async function medical(req, res) {
                 [userId]
             );
 
-        console.log(
-            "Informações médicas salvas:",
-            userId
-        );
-
         return res
             .status(200)
             .json({
                 message:
                     "Informações médicas salvas com sucesso.",
-
                 user:
                     formatUser(
                         result.rows[0]
@@ -1072,4 +1027,405 @@ async function medical(req, res) {
     } finally {
         client.release();
     }
+}
+
+// ============================================================
+// CONTATOS DE EMERGÊNCIA
+// ============================================================
+
+async function contacts(req, res) {
+    const body =
+        parseBody(req);
+
+    let userId;
+
+    if (
+        req.method === "GET" ||
+        req.method === "DELETE"
+    ) {
+        userId = Number(
+            req.query?.userId
+        );
+
+        if (!userId && body) {
+            userId = Number(
+                body.userId
+            );
+        }
+    } else {
+        userId = Number(
+            body?.userId
+        );
+    }
+
+    if (
+        !Number.isInteger(userId) ||
+        userId <= 0
+    ) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Usuário inválido."
+            });
+    }
+
+    // ========================================================
+    // LISTAR CONTATOS
+    // GET /api/auth?action=contacts&userId=1
+    // ========================================================
+
+    if (
+        req.method === "GET"
+    ) {
+        try {
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        id,
+                        name,
+                        phone,
+                        relationship,
+                        email
+                    FROM emergency_contacts
+                    WHERE user_id = $1
+                    ORDER BY id
+                    `,
+                    [userId]
+                );
+
+            return res
+                .status(200)
+                .json({
+                    contacts:
+                        result.rows
+                });
+
+        } catch (error) {
+            console.error(
+                "Erro ao carregar contatos:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    message:
+                        "Erro ao carregar os contatos.",
+                    error:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
+        }
+    }
+
+    if (!body) {
+        return res
+            .status(400)
+            .json({
+                message:
+                    "Dados inválidos."
+            });
+    }
+
+    // ========================================================
+    // ADICIONAR
+    // POST /api/auth?action=contacts
+    // ========================================================
+
+    if (
+        req.method === "POST"
+    ) {
+        const {
+            name,
+            phone,
+            relationship,
+            email
+        } = body;
+
+        if (
+            !name ||
+            !phone ||
+            !relationship
+        ) {
+            return res
+                .status(400)
+                .json({
+                    message:
+                        "Preencha os campos obrigatórios."
+                });
+        }
+
+        try {
+            const result =
+                await pool.query(
+                    `
+                    INSERT INTO emergency_contacts (
+                        user_id,
+                        name,
+                        phone,
+                        relationship,
+                        email
+                    )
+                    VALUES (
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5
+                    )
+                    RETURNING
+                        id,
+                        name,
+                        phone,
+                        relationship,
+                        email
+                    `,
+                    [
+                        userId,
+                        name.trim(),
+                        phone.trim(),
+                        relationship.trim(),
+                        email
+                            ? email.trim()
+                            : null
+                    ]
+                );
+
+            return res
+                .status(201)
+                .json({
+                    message:
+                        "Contato adicionado com sucesso.",
+                    contact:
+                        result.rows[0]
+                });
+
+        } catch (error) {
+            console.error(
+                "Erro ao adicionar contato:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    message:
+                        "Erro ao adicionar o contato.",
+                    error:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
+        }
+    }
+
+    // ========================================================
+    // EDITAR
+    // PUT /api/auth?action=contacts
+    // ========================================================
+
+    if (
+        req.method === "PUT"
+    ) {
+        const contactId =
+            Number(
+                body.contactId
+            );
+
+        const {
+            name,
+            phone,
+            relationship,
+            email
+        } = body;
+
+        if (
+            !Number.isInteger(
+                contactId
+            ) ||
+            contactId <= 0
+        ) {
+            return res
+                .status(400)
+                .json({
+                    message:
+                        "Contato inválido."
+                });
+        }
+
+        if (
+            !name ||
+            !phone ||
+            !relationship
+        ) {
+            return res
+                .status(400)
+                .json({
+                    message:
+                        "Preencha os campos obrigatórios."
+                });
+        }
+
+        try {
+            const result =
+                await pool.query(
+                    `
+                    UPDATE emergency_contacts
+                    SET
+                        name = $1,
+                        phone = $2,
+                        relationship = $3,
+                        email = $4
+                    WHERE id = $5
+                      AND user_id = $6
+                    RETURNING
+                        id,
+                        name,
+                        phone,
+                        relationship,
+                        email
+                    `,
+                    [
+                        name.trim(),
+                        phone.trim(),
+                        relationship.trim(),
+                        email
+                            ? email.trim()
+                            : null,
+                        contactId,
+                        userId
+                    ]
+                );
+
+            if (
+                result.rows.length === 0
+            ) {
+                return res
+                    .status(404)
+                    .json({
+                        message:
+                            "Contato não encontrado."
+                    });
+            }
+
+            return res
+                .status(200)
+                .json({
+                    message:
+                        "Contato atualizado com sucesso.",
+                    contact:
+                        result.rows[0]
+                });
+
+        } catch (error) {
+            console.error(
+                "Erro ao atualizar contato:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    message:
+                        "Erro ao atualizar o contato.",
+                    error:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
+        }
+    }
+
+    // ========================================================
+    // EXCLUIR
+    // DELETE /api/auth?action=contacts&userId=1&contactId=1
+    // ========================================================
+
+    if (
+        req.method === "DELETE"
+    ) {
+        const contactId =
+            Number(
+                req.query?.contactId
+            );
+
+        if (
+            !Number.isInteger(
+                contactId
+            ) ||
+            contactId <= 0
+        ) {
+            return res
+                .status(400)
+                .json({
+                    message:
+                        "Contato inválido."
+                });
+        }
+
+        try {
+            const result =
+                await pool.query(
+                    `
+                    DELETE FROM emergency_contacts
+                    WHERE id = $1
+                      AND user_id = $2
+                    RETURNING id
+                    `,
+                    [
+                        contactId,
+                        userId
+                    ]
+                );
+
+            if (
+                result.rows.length === 0
+            ) {
+                return res
+                    .status(404)
+                    .json({
+                        message:
+                            "Contato não encontrado."
+                    });
+            }
+
+            return res
+                .status(200)
+                .json({
+                    message:
+                        "Contato excluído com sucesso."
+                });
+
+        } catch (error) {
+            console.error(
+                "Erro ao excluir contato:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    message:
+                        "Erro ao excluir o contato.",
+                    error:
+                        error.message,
+                    code:
+                        error.code ||
+                        null
+                });
+        }
+    }
+
+    return res
+        .status(405)
+        .json({
+            message:
+                "Método não permitido."
+        });
 }
