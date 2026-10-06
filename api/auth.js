@@ -1,8 +1,12 @@
 const { Pool } = require("pg");
 const crypto = require("crypto");
 
+const databaseUrl = process.env.DATABASE_URL
+    .replace("?sslmode=require", "")
+    .replace("&sslmode=require", "");
+
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: databaseUrl,
     ssl: {
         rejectUnauthorized: false
     }
