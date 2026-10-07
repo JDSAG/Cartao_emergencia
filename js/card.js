@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (loggedUser !== "true") {
         window.location.href = "login.html";
+
         return;
     }
 
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!userData) {
         window.location.href = "login.html";
+
         return;
     }
 
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         window.location.href = "login.html";
+
         return;
     }
 
@@ -49,40 +52,66 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("sidebarAvatar");
 
     const profileBirthDate =
-        document.getElementById("profileBirthDate");
+        document.getElementById(
+            "profileBirthDate"
+        );
 
     const cardValidationDate =
-        document.getElementById("cardValidationDate");
+        document.getElementById(
+            "cardValidationDate"
+        );
+
+    const publicCardButton =
+        document.getElementById(
+            "publicCardButton"
+        );
 
     const medicalSection =
-        document.getElementById("medicalSection");
+        document.getElementById(
+            "medicalSection"
+        );
 
     const bloodType =
-        document.getElementById("bloodType");
+        document.getElementById(
+            "bloodType"
+        );
 
     const allergies =
-        document.getElementById("allergies");
+        document.getElementById(
+            "allergies"
+        );
 
     const medications =
-        document.getElementById("medications");
+        document.getElementById(
+            "medications"
+        );
 
     const conditions =
-        document.getElementById("conditions");
+        document.getElementById(
+            "conditions"
+        );
 
     const neurologicalConditions =
-        document.getElementById("neurologicalConditions");
+        document.getElementById(
+            "neurologicalConditions"
+        );
 
     const emergencyContactName =
-        document.getElementById("emergencyContactName");
+        document.getElementById(
+            "emergencyContactName"
+        );
 
     const emergencyContactPhone =
-        document.getElementById("emergencyContactPhone");
+        document.getElementById(
+            "emergencyContactPhone"
+        );
 
     // Configurações padrão
     user.settings = {
         showMedicalInfo: true,
         publicCard: false,
         notifications: false,
+        publicToken: null,
         ...user.settings
     };
 
@@ -92,8 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
             value === null ||
             value === undefined ||
             value === "" ||
-            (Array.isArray(value) &&
-                value.length === 0)
+            (
+                Array.isArray(value) &&
+                value.length === 0
+            )
         ) {
             return "Não informado";
         }
@@ -137,7 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return date;
         }
 
-        const [year, month, day] = parts;
+        const [year, month, day] =
+            parts;
 
         return `${day}/${month}/${year}`;
     }
@@ -195,6 +227,22 @@ document.addEventListener("DOMContentLoaded", () => {
             formatDate(
                 user.cardValidationDate
             );
+    }
+
+    // Botão do cartão público
+    if (
+        publicCardButton &&
+        user.settings.publicCard === true &&
+        user.settings.publicToken
+    ) {
+        publicCardButton.href =
+            `./public-card.html?token=${encodeURIComponent(
+                user.settings.publicToken
+            )}`;
+
+        publicCardButton.classList.remove(
+            "hidden"
+        );
     }
 
     // Informações de saúde
