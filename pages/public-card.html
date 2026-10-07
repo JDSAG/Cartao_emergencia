@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+
+        <title>
+            Cartão de Emergência | MedAlert
+        </title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            medalert: {
+                                bg: "#050a12",
+                                card: "#0a1421",
+                                border: "#263548",
+                                red: "#ff1f3d",
+                                redDark: "#d9142f",
+                                text: "#f8fafc",
+                                muted: "#94a3b8"
+                            }
+                        }
+                    }
+                }
+            };
+        </script>
+    </head>
+
+    <body class="min-h-screen bg-medalert-bg text-white">
+
+        <main class="min-h-screen flex items-center justify-center px-4 py-8">
+
+            <section class="w-full max-w-2xl">
+
+                <!-- Cabeçalho -->
+                <div class="bg-gradient-to-br from-red-600/20 to-medalert-card border border-red-500/20 rounded-3xl overflow-hidden">
+
+                    <div class="p-6 sm:p-8 border-b border-white/5">
+
+                        <div class="flex items-center gap-4">
+
+                            <div class="w-14 h-14 rounded-2xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/20">
+                                <i
+                                    data-lucide="heart-pulse"
+                                    class="w-8 h-8 text-white"
+                                ></i>
+                            </div>
+
+                            <div>
+                                <h1 class="text-2xl font-bold">
+                                    Cartão de Emergência
+                                </h1>
+
+                                <p class="text-sm text-red-200 mt-1">
+                                    Informações importantes de saúde
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Conteúdo -->
+                    <div class="p-6 sm:p-8">
+
+                        <!-- Loading -->
+                        <div
+                            id="loading"
+                            class="text-center py-10 text-gray-400"
+                        >
+                            Carregando informações...
+                        </div>
+
+                        <!-- Erro -->
+                        <div
+                            id="error"
+                            class="hidden text-center py-10"
+                        >
+                            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-red-600/10 flex items-center justify-center">
+                                <i
+                                    data-lucide="triangle-alert"
+                                    class="w-7 h-7 text-red-500"
+                                ></i>
+                            </div>
+
+                            <h2 class="text-lg font-semibold">
+                                Cartão indisponível
+                            </h2>
+
+                            <p
+                                id="errorMessage"
+                                class="text-gray-400 mt-2"
+                            >
+                                Não foi possível carregar este cartão.
+                            </p>
+                        </div>
+
+                        <!-- Cartão -->
+                        <div
+                            id="cardContent"
+                            class="hidden"
+                        >
+
+                            <!-- Perfil -->
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 pb-8 border-b border-white/10">
+
+                                <div
+                                    id="profileAvatar"
+                                    class="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center text-3xl font-bold"
+                                >
+                                    US
+                                </div>
+
+                                <div class="text-center sm:text-left">
+
+                                    <h2
+                                        id="profileName"
+                                        class="text-2xl font-bold"
+                                    >
+                                        Nome
+                                    </h2>
+
+                                    <p class="text-gray-400 mt-2">
+                                        Data de nascimento:
+                                        <span id="birthDate">
+                                            Não informado
+                                        </span>
+                                    </p>
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        Cartão válido desde:
+                                        <span id="cardValidationDate">
+                                            Não informado
+                                        </span>
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Informações médicas -->
+                            <section
+                                id="medicalSection"
+                                class="mt-8"
+                            >
+
+                                <h3 class="text-lg font-semibold mb-4">
+                                    Informações de saúde
+                                </h3>
+
+                                <div class="grid sm:grid-cols-2 gap-4">
+
+                                    <div class="bg-gray-900 border border-white/5 rounded-xl p-4">
+                                        <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                            <i
+                                                data-lucide="droplet"
+                                                class="w-4 h-4 text-red-500"
+                                            ></i>
+
+                                            Tipo sanguíneo
+                                        </div>
+
+                                        <p
+                                            id="bloodType"
+                                            class="text-xl font-bold mt-2"
+                                        >
+                                            Não informado
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-gray-900 border border-white/5 rounded-xl p-4">
+                                        <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                            <i
+                                                data-lucide="alert-circle"
+                                                class="w-4 h-4 text-red-500"
+                                            ></i>
+
+                                            Alergias
+                                        </div>
+
+                                        <p
+                                            id="allergies"
+                                            class="font-semibold mt-2"
+                                        >
+                                            Não informado
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-gray-900 border border-white/5 rounded-xl p-4">
+                                        <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                            <i
+                                                data-lucide="pill"
+                                                class="w-4 h-4 text-red-500"
+                                            ></i>
+
+                                            Medicamentos
+                                        </div>
+
+                                        <p
+                                            id="medications"
+                                            class="font-semibold mt-2"
+                                        >
+                                            Não informado
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-gray-900 border border-white/5 rounded-xl p-4">
+                                        <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                            <i
+                                                data-lucide="activity"
+                                                class="w-4 h-4 text-red-500"
+                                            ></i>
+
+                                            Condições médicas
+                                        </div>
+
+                                        <p
+                                            id="conditions"
+                                            class="font-semibold mt-2"
+                                        >
+                                            Não informado
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-gray-900 border border-white/5 rounded-xl p-4 sm:col-span-2">
+                                        <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                            <i
+                                                data-lucide="brain"
+                                                class="w-4 h-4 text-red-500"
+                                            ></i>
+
+                                            Condições neurológicas
+                                        </div>
+
+                                        <p
+                                            id="neurologicalConditions"
+                                            class="font-semibold mt-2"
+                                        >
+                                            Não informado
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </section>
+
+                            <!-- Contato -->
+                            <section class="mt-8">
+
+                                <h3 class="text-lg font-semibold mb-4">
+                                    Contato de emergência
+                                </h3>
+
+                                <div class="bg-gray-900 border border-white/5 rounded-xl p-5">
+
+                                    <div class="flex items-center gap-4">
+
+                                        <div class="w-12 h-12 rounded-xl bg-red-600/10 flex items-center justify-center">
+                                            <i
+                                                data-lucide="phone"
+                                                class="w-6 h-6 text-red-500"
+                                            ></i>
+                                        </div>
+
+                                        <div>
+
+                                            <p
+                                                id="emergencyContactName"
+                                                class="font-semibold"
+                                            >
+                                                Não informado
+                                            </p>
+
+                                            <p
+                                                id="emergencyContactRelationship"
+                                                class="text-sm text-gray-400 mt-1"
+                                            >
+                                                Não informado
+                                            </p>
+
+                                            <p
+                                                id="emergencyContactPhone"
+                                                class="text-sm text-gray-400 mt-1"
+                                            >
+                                                Telefone não informado
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </section>
+
+                            <!-- Aviso -->
+                            <div class="flex items-start gap-3 mt-8 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+
+                                <i
+                                    data-lucide="info"
+                                    class="w-5 h-5 text-yellow-400 mt-0.5"
+                                ></i>
+
+                                <p class="text-sm text-yellow-200/80">
+                                    Estas informações são destinadas a auxiliar
+                                    em situações de emergência e não substituem
+                                    avaliação médica profissional.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p class="text-center text-xs text-gray-600 mt-5">
+                    MedAlert • Cartão de Emergência
+                </p>
+
+            </section>
+
+        </main>
+
+        <script src="../js/public-card.js"></script>
+
+        <script>
+            lucide.createIcons();
+        </script>
+
+    </body>
+</html>

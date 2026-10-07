@@ -1,19 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Autenticação
-    const loggedUser = localStorage.getItem("medalert_logged");
+    const loggedUser =
+        localStorage.getItem("medalert_logged");
 
     if (loggedUser !== "true") {
         window.location.href = "login.html";
-        
         return;
     }
 
     // Recuperar usuário atual
-    const userData =localStorage.getItem("medalert_current_user") || localStorage.getItem("medalert_user");
+    const userData =
+        localStorage.getItem("medalert_current_user") ||
+        localStorage.getItem("medalert_user");
 
     if (!userData) {
         window.location.href = "login.html";
-        
         return;
     }
 
@@ -22,47 +23,86 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         user = JSON.parse(userData);
     } catch (error) {
-        console.error("Erro ao carregar os dados do usuário:", error);
-        
+        console.error(
+            "Erro ao carregar os dados do usuário:",
+            error
+        );
+
         window.location.href = "login.html";
-        
         return;
     }
 
     // Elementos
-    const profileName = document.getElementById("profileName");
-    const profileAvatar = document.getElementById("profileAvatar");
+    const profileName =
+        document.getElementById("profileName");
 
-    const sidebarName = document.getElementById("sidebarName");
-    const sidebarEmail = document.getElementById("sidebarEmail");
-    const sidebarAvatar = document.getElementById("sidebarAvatar");
+    const profileAvatar =
+        document.getElementById("profileAvatar");
 
-    const profileBirthDate = document.getElementById("profileBirthDate");
+    const sidebarName =
+        document.getElementById("sidebarName");
 
-    const cardValidationDate = document.getElementById("cardValidationDate");
+    const sidebarEmail =
+        document.getElementById("sidebarEmail");
 
-    const bloodType = document.getElementById("bloodType");
-    const allergies = document.getElementById("allergies");
-    const medications = document.getElementById("medications");
-    const conditions = document.getElementById("conditions");
+    const sidebarAvatar =
+        document.getElementById("sidebarAvatar");
 
-    const neurologicalConditions = document.getElementById("neurologicalConditions");
+    const profileBirthDate =
+        document.getElementById("profileBirthDate");
 
-    const emergencyContactName = document.getElementById("emergencyContactName");
+    const cardValidationDate =
+        document.getElementById("cardValidationDate");
 
-    const emergencyContactPhone = document.getElementById("emergencyContactPhone");
+    const medicalSection =
+        document.getElementById("medicalSection");
+
+    const bloodType =
+        document.getElementById("bloodType");
+
+    const allergies =
+        document.getElementById("allergies");
+
+    const medications =
+        document.getElementById("medications");
+
+    const conditions =
+        document.getElementById("conditions");
+
+    const neurologicalConditions =
+        document.getElementById("neurologicalConditions");
+
+    const emergencyContactName =
+        document.getElementById("emergencyContactName");
+
+    const emergencyContactPhone =
+        document.getElementById("emergencyContactPhone");
+
+    // Configurações padrão
+    user.settings = {
+        showMedicalInfo: true,
+        publicCard: false,
+        notifications: false,
+        ...user.settings
+    };
 
     // Funções auxiliares
-    function displayValue(value) { 
-        if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) { 
-            return "Não informado"; 
-        } 
-        
-        if (Array.isArray(value)) { 
-            return value.join(", "); 
-        } 
-        
-        return value; 
+    function displayValue(value) {
+        if (
+            value === null ||
+            value === undefined ||
+            value === "" ||
+            (Array.isArray(value) &&
+                value.length === 0)
+        ) {
+            return "Não informado";
+        }
+
+        if (Array.isArray(value)) {
+            return value.join(", ");
+        }
+
+        return value;
     }
 
     function getInitials(name) {
@@ -70,13 +110,19 @@ document.addEventListener("DOMContentLoaded", () => {
             return "US";
         }
 
-        const names = name.trim().split(/\S+/);
+        const names =
+            name.trim().split(/\S+/);
 
         if (names.length === 1) {
-            return names[0].substring(0, 2).toUpperCase();
+            return names[0]
+                .substring(0, 2)
+                .toUpperCase();
         }
 
-        return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+        return (
+            names[0].charAt(0) +
+            names[names.length - 1].charAt(0)
+        ).toUpperCase();
     }
 
     function formatDate(date) {
@@ -84,7 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return "Não informado";
         }
 
-        const parts = date.split("-");
+        const parts =
+            date.split("-");
 
         if (parts.length !== 3) {
             return date;
@@ -95,104 +142,179 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${day}/${month}/${year}`;
     }
 
-    //Dados do usuário
-    const fullName = user.fullName || user.name || "Nome não informado";
+    // Dados do usuário
+    const fullName =
+        user.fullName ||
+        user.name ||
+        "Nome não informado";
 
-    const email = user.email || "Email não informado";
+    const email =
+        user.email ||
+        "Email não informado";
 
-    const initials = getInitials(fullName);
+    const initials =
+        getInitials(fullName);
 
     // Informações da barra lateral
     if (sidebarName) {
-        sidebarName.textContent = fullName;
+        sidebarName.textContent =
+            fullName;
     }
 
     if (sidebarEmail) {
-        sidebarEmail.textContent = email;
+        sidebarEmail.textContent =
+            email;
     }
 
     if (sidebarAvatar) {
-        sidebarAvatar.textContent = initials;
+        sidebarAvatar.textContent =
+            initials;
     }
 
     // Nome e avatar do cartão
     if (profileName) {
-        profileName.textContent = fullName;
+        profileName.textContent =
+            fullName;
     }
 
     if (profileAvatar) {
-        profileAvatar.textContent = initials;
+        profileAvatar.textContent =
+            initials;
     }
 
     // Informações pessoais
-
     if (profileBirthDate) {
-        profileBirthDate.textContent = formatDate(user.birthDate);
+        profileBirthDate.textContent =
+            formatDate(
+                user.birthDate
+            );
     }
 
     if (cardValidationDate) {
-        cardValidationDate.textContent = formatDate(user.cardValidationDate);
+        cardValidationDate.textContent =
+            formatDate(
+                user.cardValidationDate
+            );
     }
 
     // Informações de saúde
+    if (
+        medicalSection &&
+        user.settings.showMedicalInfo === false
+    ) {
+        medicalSection.style.display =
+            "none";
+    }
+
     if (bloodType) {
-        bloodType.textContent = displayValue(user.bloodType);
+        bloodType.textContent =
+            displayValue(
+                user.bloodType
+            );
     }
 
     if (allergies) {
-        allergies.textContent = displayValue(user.allergies);
+        allergies.textContent =
+            displayValue(
+                user.allergies
+            );
     }
 
     if (medications) {
-        medications.textContent = displayValue(user.medications);
+        medications.textContent =
+            displayValue(
+                user.medications
+            );
     }
 
     if (conditions) {
-        conditions.textContent = displayValue(user.conditions);
+        conditions.textContent =
+            displayValue(
+                user.conditions
+            );
     }
 
     if (neurologicalConditions) {
-        neurologicalConditions.textContent = displayValue(user.neurologicalConditions);
+        neurologicalConditions.textContent =
+            displayValue(
+                user.neurologicalConditions
+            );
     }
 
     // Contato de emergência
-    let emergencyContact = null;
+    let emergencyContact =
+        null;
 
-    if (Array.isArray(user.emergencyContacts)) {
-        emergencyContact =user.emergencyContacts[0];
+    if (
+        Array.isArray(
+            user.emergencyContacts
+        )
+    ) {
+        emergencyContact =
+            user.emergencyContacts[0];
     }
 
     // Compatibilidade com dados antigos
-    if (!emergencyContact && user.emergencyContactName) {
+    if (
+        !emergencyContact &&
+        user.emergencyContactName
+    ) {
         emergencyContact = {
-            name: user.emergencyContactName,
-            phone: user.emergencyContactPhone || ""
+            name:
+                user.emergencyContactName,
+
+            phone:
+                user.emergencyContactPhone ||
+                ""
         };
     }
 
     if (emergencyContactName) {
-        emergencyContactName.textContent = emergencyContact?.name || "Não informado";
+        emergencyContactName.textContent =
+            emergencyContact?.name ||
+            "Não informado";
     }
 
     if (emergencyContactPhone) {
-        emergencyContactPhone.textContent = emergencyContact?.phone || "Telefone não informado";
+        emergencyContactPhone.textContent =
+            emergencyContact?.phone ||
+            "Telefone não informado";
     }
 
     // Logout
-    const logoutButton = document.getElementById("logoutButton");
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
 
     if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-            const confirmLogout = confirm("Deseja realmente sair da sua conta?");
+        logoutButton.addEventListener(
+            "click",
+            () => {
+                const confirmLogout =
+                    confirm(
+                        "Deseja realmente sair da sua conta?"
+                    );
 
-            if (!confirmLogout) {
-                return;
+                if (!confirmLogout) {
+                    return;
+                }
+
+                localStorage.removeItem(
+                    "medalert_logged"
+                );
+
+                localStorage.removeItem(
+                    "medalert_current_user"
+                );
+
+                localStorage.removeItem(
+                    "medalert_user"
+                );
+
+                window.location.href =
+                    "login.html";
             }
-
-            localStorage.removeItem("medalert_logged");
-            localStorage.removeItem("medalert_current_user");
-
-            window.location.href = "login.html";
-        });
+        );
     }
 });
