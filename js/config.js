@@ -62,6 +62,27 @@ document.addEventListener("DOMContentLoaded", () => {
             "cancelSettings"
         );
 
+    // Elementos do cartão público
+    const publicCardLinkContainer =
+        document.getElementById(
+            "publicCardLinkContainer"
+        );
+
+    const publicCardLink =
+        document.getElementById(
+            "publicCardLink"
+        );
+
+    const copyPublicCardLink =
+        document.getElementById(
+            "copyPublicCardLink"
+        );
+
+    const copyPublicCardMessage =
+        document.getElementById(
+            "copyPublicCardMessage"
+        );
+
     // Recuperar usuário
     const userData =
         localStorage.getItem(
@@ -95,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Não foi possível identificar sua conta.",
             "error"
         );
+
         return;
     }
 
@@ -103,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMedicalInfo: true,
         publicCard: false,
         notifications: false,
+        publicToken: null,
         ...user.settings
     };
 
@@ -172,6 +195,45 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    // Atualizar link do cartão público
+    function updatePublicCardLink() {
+        if (
+            !publicCardLinkContainer ||
+            !publicCardLink
+        ) {
+            return;
+        }
+
+        const token =
+            user.settings?.publicToken;
+
+        if (
+            publicCard.checked &&
+            token
+        ) {
+            const link =
+                `${window.location.origin}/pages/public-card.html?token=${encodeURIComponent(
+                    token
+                )}`;
+
+            publicCardLink.value =
+                link;
+
+            publicCardLinkContainer.classList.remove(
+                "hidden"
+            );
+
+            return;
+        }
+
+        publicCardLink.value =
+            "";
+
+        publicCardLinkContainer.classList.add(
+            "hidden"
+        );
+    }
+
     // Ler resposta
     async function readResponse(response) {
         const responseText =
@@ -201,6 +263,56 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         return data;
+    }
+
+    // Mostrar link ao carregar a página
+    updatePublicCardLink();
+
+    // Atualizar link quando marcar/desmarcar
+    publicCard.addEventListener(
+        "change",
+        () => {
+            updatePublicCardLink();
+        }
+    );
+
+    // Copiar link
+    if (copyPublicCardLink) {
+        copyPublicCardLink.addEventListener(
+            "click",
+            async () => {
+                if (
+                    !publicCardLink ||
+                    !publicCardLink.value
+                ) {
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(
+                        publicCardLink.value
+                    );
+
+                    if (copyPublicCardMessage) {
+                        copyPublicCardMessage.classList.remove(
+                            "hidden"
+                        );
+
+                        setTimeout(() => {
+                            copyPublicCardMessage.classList.add(
+                                "hidden"
+                            );
+                        }, 2500);
+                    }
+
+                } catch (error) {
+                    console.error(
+                        "Erro ao copiar link:",
+                        error
+                    );
+                }
+            }
+        );
     }
 
     // Salvar configurações
@@ -322,7 +434,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
 
-                passwordInput.value = "";
+                passwordInput.value =
+                    "";
+
+                updatePublicCardLink();
 
                 showMessage(
                     "Configurações salvas com sucesso! ✅",
@@ -359,7 +474,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailInput.value =
                     user.email || "";
 
-                passwordInput.value = "";
+                passwordInput.value =
+                    "";
 
                 showMedicalInfo.checked =
                     user.settings
@@ -372,6 +488,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 notifications.checked =
                     user.settings
                         .notifications;
+
+                updatePublicCardLink();
 
                 showMessage(
                     "Alterações canceladas.",
