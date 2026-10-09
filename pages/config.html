@@ -31,9 +31,10 @@
                 }
             };
         </script>
+        <link rel="stylesheet" href="../css/app.css">
     </head>
 
-    <body class="min-h-screen bg-medalert-bg text-medalert-text">
+    <body class="min-h-screen bg-medalert-bg text-medalert-text app-page">
 
         <!-- Header mobile -->
         <header class="lg:hidden flex items-center justify-between p-5 border-b border-white/5">
@@ -550,6 +551,43 @@
             </main>
 
         </div>
+
+        <!-- Navegação mobile -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-20 bg-medalert-bg/95 backdrop-blur-xl border-t border-white/5 px-3">
+            <div class="h-full flex items-center justify-around">
+                <a href="./dashboard.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Início
+                    </span>
+                </a>
+
+                <a href="./card.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="id-card" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Cartão
+                    </span>
+                </a>
+
+                <a href="./contacts.html" class="flex flex-col items-center gap-1 text-slate-500">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Contatos
+                    </span>
+                </a>
+
+                <a href="./profile.html" class="flex flex-col items-center gap-1 text-medalert-red">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+
+                    <span class="text-[10px]">
+                        Perfil
+                    </span>
+                </a>
+            </div>
+        </nav>
 
         <script src="../js/config.js"></script>
 
