@@ -159,8 +159,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     )}`
                 );
 
-            const data =
-                await response.json();
+            const responseText =
+                await response.text();
+
+            let data = {};
+
+            try {
+                data = responseText
+                    ? JSON.parse(responseText)
+                    : {};
+            } catch {
+                data = {};
+            }
 
             if (!response.ok) {
                 throw new Error(
@@ -270,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         } catch (err) {
-            console.error(
+            console.warn(
                 "Erro ao carregar cartão público:",
                 err
             );
