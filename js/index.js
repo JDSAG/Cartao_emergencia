@@ -1,14 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Ano atual
     const currentYear = document.getElementById("currentYear");
 
     if (currentYear) {
         currentYear.textContent = new Date().getFullYear();
     }
 
-    // Menu mobile
     const mobileMenuButton = document.getElementById("mobileMenuButton");
     const mobileMenu = document.getElementById("mobileMenu");
+
+    const renderIcons = () => {
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    };
+
+    const closeMobileMenu = () => {
+        if (!mobileMenu || !mobileMenuButton) {
+            return;
+        }
+
+        mobileMenu.classList.add("hidden");
+        document.body.classList.remove("menu-open");
+        mobileMenuButton.setAttribute("aria-expanded", "false");
+        mobileMenuButton.setAttribute("aria-label", "Abrir menu");
+        mobileMenuButton.innerHTML = `<i data-lucide="menu" aria-hidden="true"></i>`;
+        renderIcons();
+    };
 
     if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener("click", () => {
@@ -16,31 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const isOpen = !mobileMenu.classList.contains("hidden");
 
+            document.body.classList.toggle("menu-open", isOpen);
             mobileMenuButton.setAttribute("aria-expanded", isOpen.toString());
+            mobileMenuButton.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+            mobileMenuButton.innerHTML = isOpen ? `<i data-lucide="x" aria-hidden="true"></i>` : `<i data-lucide="menu" aria-hidden="true"></i>`;
 
-            // Troca o ícone do botão
-            mobileMenuButton.innerHTML = isOpen ? `<i data-lucide="x" class="w-6 h-6"></i>` : `<i data-lucide="menu" class="w-6 h-6"></i>`;
+            renderIcons();
         });
     }
 
-    // Fechar menu mobile ao clicar em um link
     const mobileLinks = document.querySelectorAll(".mobile-link");
 
     mobileLinks.forEach(link => {
-        link.addEventListener("click", () => {
-            if (mobileMenu) {
-                mobileMenu.classList.add("hidden");
-            }
-
-            if (mobileMenuButton) {
-                mobileMenuButton.setAttribute("aria-expanded", "false");
-
-                mobileMenuButton.innerHTML = `<i data-lucide="menu" class="w-6 h-6"></i>`;
-            }
-        });
+        link.addEventListener("click", closeMobileMenu);
     });
 
-    //Scroll suave
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
     anchorLinks.forEach(link => {
@@ -66,26 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    //Verificação de Login
-    const logged = localStorage.getItem("medalert_logged");
-    const loginLinks = document.querySelectorAll('a[href="./pages/login.html"]');
-    const registerLinks = document.querySelectorAll('a[href="./pages/register.html"]');
-
-    /*Se o usuário já estiver autenticado, podemos alterar os links principais para
-    facilitar o acesso ao dashboard. Não redirecionamos automaticamente.*/
-    if (logged === "true") {
-        loginLinks.forEach(link => {
-            link.textContent = "Entrar";
-            link.href = "./pages/login.html";
-        });
-
-        registerLinks.forEach(link => {
-            link.textContent = "Meu cartão";
-            link.href = "";
-        });
-    }
-
-    // Animação ao entrar na tela
     const animatedElements = document.querySelectorAll("[data-animate]");
 
     if ("IntersectionObserver" in window) {
@@ -106,6 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         animatedElements.forEach(element => {
             observer.observe(element);
+        });
+    } else {
+        animatedElements.forEach(element => {
+            element.classList.add("animate-visible");
         });
     }
 });

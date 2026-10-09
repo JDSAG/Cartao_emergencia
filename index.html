@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Seu cartão de emergência digital, acessível quando mais importa.">
+        <meta name="description" content="Cartão de emergência digital para manter suas informações de saúde prontas quando você mais precisar.">
         <title>Cartão de Emergência</title>
 
         <script src="https://cdn.tailwindcss.com"></script>
@@ -14,467 +14,458 @@
                 theme: {
                     extend: {
                         colors: {
-                            emergency: {
-                                bg: "#0b0f1a",
-                                card: "#111827",
-                                border: "#1f2937",
-                                red: "#dc2626",
-                                redDark: "#991b1b"
+                            care: {
+                                bg: "#FBFAF7",
+                                surface: "#FFFFFF",
+                                soft: "#F1F6F4",
+                                sand: "#F7F1E8",
+                                text: "#1D2B36",
+                                muted: "#5E6E78",
+                                border: "#E6EAE8",
+                                primary: "#2C8C80",
+                                primaryDark: "#1F6F65",
+                                primaryLight: "#DDF0EC",
+                                coral: "#E4655A",
+                                coralLight: "#FDE9E6",
+                                sky: "#E3EEF9",
+                                skyText: "#2C5E8C",
+                                yellow: "#FFF1D6",
+                                yellowText: "#8A6212"
                             }
                         }
                     }
                 }
-            }
+            };
         </script>
 
         <link rel="stylesheet" href="./css/index.css">
     </head>
-    <body class="bg-emergency-bg text-white min-h-screen">
-        <!--Header-->
-        <header class="border-b border-emergency-border bg-emergency-bg/95 backdrop-blur-md sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <a href="index.html" class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/20">
-                            <i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
-                        </div>
+    <body>
+        <header class="site-header" aria-label="Cabeçalho principal">
+            <div class="container header-shell">
+                <a href="index.html" class="brand" aria-label="Cartão de Emergência - Início">
+                    <span class="brand-icon" aria-hidden="true">
+                        <i data-lucide="heart-pulse"></i>
+                    </span>
 
-                        <div>
-                            <span class="font-bold text-lg block">
-                                Cartão de Emergência
-                            </span>
+                    <span class="brand-copy">
+                        <strong>Cartão de Emergência</strong>
+                        <span>Seu cuidado, sempre à mão</span>
+                    </span>
+                </a>
 
-                            <span class="text-xs text-gray-400">
-                                Informação quando mais importa
-                            </span>
-                        </div>
-                    </a>
+                <nav class="desktop-nav" aria-label="Navegação principal">
+                    <a href="#inicio">Início</a>
+                    <a href="#como-funciona">Como funciona</a>
+                    <a href="#recursos">Recursos</a>
+                    <a href="#privacidade">Privacidade</a>
+                </nav>
 
-                    <!--Desktop-->
-                    <nav class="hidden md:flex items-center gap-8">
-                        <a href="#inicio" class="text-gray-300 hover:text-white transition">
-                            Início
-                        </a>
-
-                        <a href="#como-funciona" class="text-gray-300 hover:text-white transition">
-                            Como funciona
-                        </a>
-
-                        <a href="#recursos" class="text-gray-300 hover:text-white transition">
-                            Recursos
-                        </a>
-                    </nav>
-
-                    <div class="hidden md:flex items-center gap-3">
-                        <a href="./pages/login.html" class="px-5 py-2.5 rounded-lg border border-emergency-border text-gray-200 hover:bg-emergency-card transition">
-                            Entrar
-                        </a>
-
-                        <a href="./pages/register.html" class="px-5 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 transition font-semibold">
-                            Criar conta
-                        </a>
-                    </div>
-
-                    <!--Mobile menu button-->
-                    <button id="mobileMenuButton" class="md:hidden p-2 rounded-lg hover:bg-emergency-card transition" aria-label="Abrir menu">
-                        <i data-lucide="menu" class="w-6 h-6"></i>
-                    </button>
+                <div class="header-actions">
+                    <a href="./pages/login.html" class="btn btn-outline">Entrar</a>
+                    <a href="./pages/register.html" class="btn btn-primary">Criar conta</a>
                 </div>
 
-                <!--Mobile menu-->
-                <div id="mobileMenu" class="hidden md:hidden pt-5 pb-2">
-                    <nav class="flex flex-col gap-2">
-                        <a href="#inicio" class="mobile-link px-4 py-3 rounded-lg text-gray-300 hover:bg-emergency-card">
-                            Início
-                        </a>
+                <button
+                    id="mobileMenuButton"
+                    class="mobile-menu-button"
+                    type="button"
+                    aria-label="Abrir menu"
+                    aria-controls="mobileMenu"
+                    aria-expanded="false"
+                >
+                    <i data-lucide="menu" aria-hidden="true"></i>
+                </button>
+            </div>
 
-                        <a href="#como-funciona" class="mobile-link px-4 py-3 rounded-lg text-gray-300 hover:bg-emergency-card">
-                            Como funciona
-                        </a>
-
-                        <a href="#recursos" class="mobile-link px-4 py-3 rounded-lg text-gray-300 hover:bg-emergency-card">
-                            Recursos
-                        </a>
-
-                        <div class="border-t border-emergency-border my-2"></div>
-
-                        <a href="./pages/login.html" class="mobile-link px-4 py-3 rounded-lg text-gray-300 hover:bg-emergency-card">
-                            Entrar
-                        </a>
-
-                        <a href="./pages/register.html" class="px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 font-semibold text-center">
-                            Criar conta
-                        </a>
-                    </nav>
-                </div>
+            <div id="mobileMenu" class="mobile-menu hidden">
+                <nav class="container mobile-nav" aria-label="Navegação mobile">
+                    <a class="mobile-link" href="#inicio">Início</a>
+                    <a class="mobile-link" href="#como-funciona">Como funciona</a>
+                    <a class="mobile-link" href="#recursos">Recursos</a>
+                    <a class="mobile-link" href="#privacidade">Privacidade</a>
+                    <a class="mobile-link btn btn-outline" href="./pages/login.html">Entrar</a>
+                    <a class="mobile-link btn btn-primary" href="./pages/register.html">Criar conta</a>
+                </nav>
             </div>
         </header>
 
         <main>
-            <!--Hero-->
-            <section id="inicio" class="relative overflow-hidden">
-                <div class="absolute inset-0 pointer-events-none">
-                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-600/10 rounded-full blur-3xl"></div>
+            <section id="inicio" class="hero section-pad">
+                <div class="container hero-grid">
+                    <div class="hero-copy" data-animate>
+                        <span class="eyebrow">
+                            <span aria-hidden="true"></span>
+                            Seu cuidado, sempre à mão
+                        </span>
 
-                    <div class="absolute top-40 right-10 w-72 h-72 bg-blue-600/5 rounded-full blur-3xl"></div>
-                </div>
+                        <h1>
+                            Suas informações de saúde,
+                            <span>prontas</span>
+                            quando você mais precisar.
+                        </h1>
 
-                <div class="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
-                    <div class="grid lg:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600/10 border border-red-600/20 text-red-400 text-sm mb-6">
-                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        <p>
+                            Um cartão de emergência digital para organizar dados importantes, contatos e orientações de saúde em um lugar simples, acolhedor e fácil de acessar.
+                        </p>
 
-                                Segurança e informação
-                            </div>
+                        <div class="hero-actions">
+                            <a href="./pages/register.html" class="btn btn-primary btn-large">
+                                Criar meu cartão
+                                <i data-lucide="arrow-right" aria-hidden="true"></i>
+                            </a>
 
-                            <h1 class="text-4xl md:text-6xl font-bold leading-tight">
-                                Suas informações de saúde
-
-                                <span class="text-red-500">
-                                    quando mais importam.
-                                </span>
-                            </h1>
-
-                            <p class="mt-6 text-lg text-gray-400 leading-relaxed max-w-xl">
-                                Um cartão de emergência digital que permite armazenar
-                                informações importantes e torná-las acessíveis rapidamente
-                                em uma situação de emergência.
-                            </p>
-
-                            <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                                <a href="./pages/register.html" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition shadow-lg shadow-red-600/20">
-                                    Criar meu cartão
-
-                                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                                </a>
-
-                                <a href="./pages/login.html" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl border border-emergency-border hover:bg-emergency-card font-semibold transition">
-                                    Já tenho uma conta
-                                </a>
-                            </div>
-
-                            <div class="flex flex-wrap gap-6 mt-10 text-sm text-gray-400">
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="smartphone" class="w-5 h-5 text-red-500"></i>
-
-                                    Acesso rápido
-                                </div>
-
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="shield-check" class="w-5 h-5 text-red-500"></i>
-
-                                    Informações organizadas
-                                </div>
-                            </div>
+                            <a href="./pages/login.html" class="btn btn-secondary btn-large">Já tenho uma conta</a>
                         </div>
 
-                        <div class="flex justify-center lg:justify-end">
-                            <div class="relative w-full max-w-md">
-                                <div class="absolute inset-0 bg-red-600/20 blur-3xl rounded-full"></div>
+                        <ul class="hero-checks" aria-label="Benefícios principais">
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Gratuito para começar
+                            </li>
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Pronto em minutos
+                            </li>
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Você controla o que compartilha
+                            </li>
+                        </ul>
+                    </div>
 
-                                <!--Card-->
-                                <div class="relative bg-emergency-card border border-emergency-border rounded-3xl p-6 shadow-2xl">
-                                    <!--Card header-->
-                                    <div class="flex items-center justify-between mb-6">
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-11 h-11 rounded-xl bg-red-600 flex items-center justify-center">
-                                                <i data-lucide="heart-pulse" class="w-6 h-6"></i>
-                                            </div>
+                    <div class="hero-visual" data-animate>
+                        <aside class="floating-card floating-card-qr" aria-label="Acesso por QR Code">
+                            <span class="floating-icon">
+                                <i data-lucide="qr-code" aria-hidden="true"></i>
+                            </span>
+                            <div>
+                                <strong>Acesso por QR Code</strong>
+                                <small>Rápido e simples</small>
+                            </div>
+                        </aside>
 
-                                            <div>
-                                                <p class="font-semibold">
-                                                    Cartão de Emergência
-                                                </p>
-
-                                                <p class="text-xs text-gray-500">
-                                                    Perfil de emergência
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="w-9 h-9 rounded-full bg-green-500/10 flex items-center justify-center">
-                                            <i data-lucide="check" class="w-5 h-5 text-green-500"></i>
-                                        </div>
-                                    </div>
-
-                                    <!--User-->
-                                    <div class="flex items-center gap-4 p-4 bg-gray-900/70 rounded-2xl border border-gray-800">
-                                        <div class="w-14 h-14 rounded-full bg-gray-700 flex items-center justify-center text-xl font-bold">
-                                            JS
-                                        </div>
-
+                        <div class="phone-shell" aria-label="Exemplo de cartão de emergência">
+                            <div class="phone-card">
+                                <div class="card-top">
+                                    <div class="card-title">
+                                        <span class="card-logo" aria-hidden="true">
+                                            <i data-lucide="heart-pulse"></i>
+                                        </span>
                                         <div>
-                                            <p class="font-semibold">
-                                                Usuário
-                                            </p>
-
-                                            <p class="text-sm text-gray-500">
-                                                Informações de emergência
-                                            </p>
+                                            <strong>Cartão de Emergência</strong>
+                                            <small>Perfil de saúde</small>
                                         </div>
                                     </div>
 
-                                    <!--Informações-->
-                                    <div class="grid grid-cols-2 gap-3 mt-4">
-                                        <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-                                            <p class="text-xs text-gray-500 mb-1">
-                                                Tipo sanguíneo
-                                            </p>
+                                    <span class="status-pill">
+                                        <i data-lucide="check" aria-hidden="true"></i>
+                                        Ativo
+                                    </span>
+                                </div>
 
-                                            <p class="text-lg font-bold text-red-400">
-                                                O+
-                                            </p>
-                                        </div>
-
-                                        <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-                                            <p class="text-xs text-gray-500 mb-1">
-                                                Alergias
-                                            </p>
-
-                                            <p class="text-sm font-semibold">
-                                                Cadastradas
-                                            </p>
-                                        </div>
-
-                                        <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-                                            <p class="text-xs text-gray-500 mb-1">
-                                                Medicamentos
-                                            </p>
-
-                                            <p class="text-sm font-semibold">
-                                                Cadastrados
-                                            </p>
-                                        </div>
-
-                                        <div class="bg-gray-900/70 border border-gray-800 rounded-xl p-4">
-                                            <p class="text-xs text-gray-500 mb-1">
-                                                Contato
-                                            </p>
-
-                                            <p class="text-sm font-semibold">
-                                                Emergência
-                                            </p>
-                                        </div>
+                                <div class="profile-row">
+                                    <div class="avatar" aria-hidden="true">MA</div>
+                                    <div>
+                                        <strong>Marcelo Almeida</strong>
+                                        <span>Informações essenciais</span>
                                     </div>
                                 </div>
+
+                                <div class="info-grid">
+                                    <article class="info-tile blood">
+                                        <small>Tipo sanguíneo</small>
+                                        <strong>O+</strong>
+                                    </article>
+
+                                    <article class="info-tile">
+                                        <small>Alergias</small>
+                                        <strong>Dipirona</strong>
+                                    </article>
+
+                                    <article class="info-tile">
+                                        <small>Medicamentos</small>
+                                        <strong>Losartana</strong>
+                                    </article>
+
+                                    <article class="info-tile">
+                                        <small>Condições</small>
+                                        <strong>Hipertensão</strong>
+                                    </article>
+                                </div>
+
+                                <div class="contact-card">
+                                    <div>
+                                        <small>Contato principal</small>
+                                        <strong>Ana Almeida</strong>
+                                        <span>(11) 98888-0000</span>
+                                    </div>
+
+                                    <button type="button" class="call-icon" aria-label="Ligar para contato principal">
+                                        <i data-lucide="phone" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="call-button">
+                                    <i data-lucide="phone-call" aria-hidden="true"></i>
+                                    Ligar para contato
+                                </button>
                             </div>
                         </div>
+
+                        <aside class="floating-card floating-card-shield" aria-label="Dados protegidos">
+                            <span class="floating-icon">
+                                <i data-lucide="shield-check" aria-hidden="true"></i>
+                            </span>
+                            <div>
+                                <strong>Dados protegidos</strong>
+                                <small>Você no controle</small>
+                            </div>
+                        </aside>
                     </div>
                 </div>
             </section>
 
-            <!--Como funciona-->
-            <section id="como-funciona" class="border-t border-emergency-border bg-gray-950">
-                <div class="max-w-7xl mx-auto px-6 py-20">
-                    <div class="text-center max-w-2xl mx-auto">
-                        <p class="text-red-500 font-semibold text-sm uppercase tracking-wider">
-                            Como funciona
-                        </p>
-
-                        <h2 class="text-3xl md:text-4xl font-bold mt-3">
-                            Simples de usar
-                        </h2>
-
-                        <p class="text-gray-400 mt-4">
-                            Suas informações ficam organizadas para serem
-                            acessadas rapidamente quando necessário.
-                        </p>
-                    </div>
-
-                    <div class="grid md:grid-cols-3 gap-6 mt-12">
-                        <!--Step 1-->
-                        <div class="bg-emergency-card border border-emergency-border rounded-2xl p-6">
-                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center mb-5">
-                                <i data-lucide="user-plus" class="w-6 h-6"></i>
-                            </div>
-
-                            <span class="text-sm text-red-500 font-semibold">
-                                01
-                            </span>
-
-                            <h3 class="text-xl font-bold mt-2">
-                                Crie sua conta
-                            </h3>
-
-                            <p class="text-gray-400 mt-3 leading-relaxed">
-                                Cadastre seus dados e configure as informações
-                                que deseja disponibilizar em uma emergência.
-                            </p>
-                        </div>
-
-                        <!--Step 2-->
-                        <div class="bg-emergency-card border border-emergency-border rounded-2xl p-6">
-                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center mb-5">
-                                <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-                            </div>
-
-                            <span class="text-sm text-red-500 font-semibold">
-                                02
-                            </span>
-
-                            <h3 class="text-xl font-bold mt-2">
-                                Configure seu cartão
-                            </h3>
-
-                            <p class="text-gray-400 mt-3 leading-relaxed">
-                                Adicione informações como tipo sanguíneo,
-                                alergias, medicamentos e contatos de emergência.
-                            </p>
-                        </div>
-
-                        <!--Step 3-->
-                        <div class="bg-emergency-card border border-emergency-border rounded-2xl p-6">
-                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center mb-5">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
-                            </div>
-
-                            <span class="text-sm text-red-500 font-semibold">
-                                03
-                            </span>
-
-                            <h3 class="text-xl font-bold mt-2">
-                                Tenha suas informações disponíveis
-                            </h3>
-
-                            <p class="text-gray-400 mt-3 leading-relaxed">
-                                Consulte e gerencie seus dados de emergência
-                                de forma organizada sempre que precisaratível.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!--Recursos-->
-            <section id="recursos">
-                <div class="max-w-7xl mx-auto px-6 py-20">
-                    <div class="grid lg:grid-cols-2 gap-14 items-center">
+            <section class="trust-band" aria-label="Benefícios de confiança">
+                <div class="container trust-grid" data-animate>
+                    <article>
+                        <span>
+                            <i data-lucide="zap" aria-hidden="true"></i>
+                        </span>
                         <div>
-                            <p class="text-red-500 font-semibold text-sm uppercase tracking-wider">
-                                Recursos
-                            </p>
+                            <strong>Acesso rápido</strong>
+                            <small>Informação importante sem complicação.</small>
+                        </div>
+                    </article>
 
-                            <h2 class="text-3xl md:text-4xl font-bold mt-3">
-                                Tudo organizado em um só lugar.
-                            </h2>
+                    <article>
+                        <span>
+                            <i data-lucide="layout-list" aria-hidden="true"></i>
+                        </span>
+                        <div>
+                            <strong>Tudo organizado</strong>
+                            <small>Dados de saúde e contatos em ordem.</small>
+                        </div>
+                    </article>
 
-                            <p class="text-gray-400 mt-5 leading-relaxed">
-                                Tenha controle sobre suas informações de emergência
-                                e mantenha os dados importantes organizados.
-                            </p>
+                    <article>
+                        <span>
+                            <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+                        </span>
+                        <div>
+                            <strong>Privacidade em primeiro lugar</strong>
+                            <small>Escolha o que fica visível.</small>
+                        </div>
+                    </article>
+
+                    <article>
+                        <span>
+                            <i data-lucide="refresh-cw" aria-hidden="true"></i>
+                        </span>
+                        <div>
+                            <strong>Sempre atualizável</strong>
+                            <small>Revise seus dados quando precisar.</small>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="como-funciona" class="section-pad">
+                <div class="container">
+                    <div class="section-heading centered" data-animate>
+                        <span class="section-kicker">Como funciona</span>
+                        <h2>Três passos para ficar tranquilo</h2>
+                        <p>Crie, organize e mantenha suas informações essenciais disponíveis para momentos em que clareza faz diferença.</p>
+                    </div>
+
+                    <div class="steps-grid">
+                        <article class="step-card" data-animate>
+                            <span class="step-number">01</span>
+                            <span class="step-icon icon-green">
+                                <i data-lucide="user-plus" aria-hidden="true"></i>
+                            </span>
+                            <h3>Crie sua conta</h3>
+                            <p>Comece com um cadastro simples para guardar suas informações com segurança.</p>
+                        </article>
+
+                        <article class="step-card" data-animate>
+                            <span class="step-number">02</span>
+                            <span class="step-icon icon-yellow">
+                                <i data-lucide="clipboard-list" aria-hidden="true"></i>
+                            </span>
+                            <h3>Monte seu cartão</h3>
+                            <p>Adicione tipo sanguíneo, alergias, medicamentos, condições e contatos importantes.</p>
+                        </article>
+
+                        <article class="step-card" data-animate>
+                            <span class="step-number">03</span>
+                            <span class="step-icon icon-blue">
+                                <i data-lucide="badge-check" aria-hidden="true"></i>
+                            </span>
+                            <h3>Tenha tudo disponível</h3>
+                            <p>Acesse e atualize seus dados sempre que necessário, com tudo reunido em um só lugar.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="recursos" class="features section-pad">
+                <div class="container">
+                    <div class="section-heading" data-animate>
+                        <span class="section-kicker">Recursos</span>
+                        <h2>Informações essenciais, com calma e clareza</h2>
+                        <p>Um espaço para manter dados de saúde, contatos e preferências organizados do seu jeito.</p>
+                    </div>
+
+                    <div class="bento-grid">
+                        <article class="feature-card feature-large" data-animate>
+                            <span class="feature-icon icon-green">
+                                <i data-lucide="heart-pulse" aria-hidden="true"></i>
+                            </span>
+                            <h3>Dados de saúde</h3>
+                            <p>Registre as informações que ajudam alguém a entender rapidamente seu contexto de saúde.</p>
+
+                            <div class="tag-list" aria-label="Tipos de informação de saúde">
+                                <span class="tag tag-coral">Tipo sanguíneo</span>
+                                <span class="tag tag-yellow">Alergias</span>
+                                <span class="tag tag-blue">Medicamentos</span>
+                                <span class="tag tag-green">Condições</span>
+                                <span class="tag">Observações</span>
+                            </div>
+                        </article>
+
+                        <article class="feature-card" data-animate>
+                            <span class="feature-icon icon-blue">
+                                <i data-lucide="users" aria-hidden="true"></i>
+                            </span>
+                            <h3>Contatos</h3>
+                            <p>Inclua pessoas de confiança para serem acionadas rapidamente.</p>
+                        </article>
+
+                        <article class="feature-card" data-animate>
+                            <span class="feature-icon icon-yellow">
+                                <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+                            </span>
+                            <h3>Controle</h3>
+                            <p>Atualize o cartão quando seus dados mudarem e mantenha tudo coerente.</p>
+                        </article>
+
+                        <article class="feature-card feature-wide" data-animate>
+                            <span class="feature-icon icon-coral">
+                                <i data-lucide="qr-code" aria-hidden="true"></i>
+                            </span>
+                            <div>
+                                <h3>Acesso rápido por QR Code</h3>
+                                <p>Facilite a consulta das informações permitidas em uma situação de urgência.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="privacidade" class="privacy section-pad">
+                <div class="container privacy-grid">
+                    <div class="privacy-copy" data-animate>
+                        <span class="section-kicker">Privacidade e controle</span>
+                        <h2>Você decide o que aparece</h2>
+                        <p>O cartão foi pensado para equilibrar acesso rápido e respeito às suas escolhas. Mantenha visível apenas o que fizer sentido para você.</p>
+
+                        <ul class="privacy-list">
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Escolha quais campos ficam disponíveis.
+                            </li>
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Atualize suas informações a qualquer momento.
+                            </li>
+                            <li>
+                                <i data-lucide="check" aria-hidden="true"></i>
+                                Mantenha dados sensíveis sob seu controle.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="privacy-panel" data-animate>
+                        <div class="panel-top">
+                            <div>
+                                <strong>Campos visíveis</strong>
+                                <span>Exemplo de controle do cartão</span>
+                            </div>
+                            <i data-lucide="shield" aria-hidden="true"></i>
                         </div>
 
-                        <div class="grid sm:grid-cols-2 gap-4">
-                            <div class="p-5 rounded-2xl bg-emergency-card border border-emergency-border">
-                                <i data-lucide="heart-pulse" class="w-6 h-6 text-red-500"></i>
+                        <div class="toggle-list">
+                            <button class="toggle-row" type="button" role="switch" aria-checked="true" aria-label="Mostrar tipo sanguíneo">
+                                <span>Tipo sanguíneo</span>
+                                <span class="toggle is-on" aria-hidden="true"></span>
+                            </button>
 
-                                <h3 class="font-semibold mt-4">
-                                    Dados de saúde
-                                </h3>
+                            <button class="toggle-row" type="button" role="switch" aria-checked="true" aria-label="Mostrar alergias">
+                                <span>Alergias</span>
+                                <span class="toggle is-on" aria-hidden="true"></span>
+                            </button>
 
-                                <p class="text-sm text-gray-500 mt-2">
-                                    Organize informações importantes
-                                    relacionadas à sua saúde.
-                                </p>
-                            </div>
+                            <button class="toggle-row" type="button" role="switch" aria-checked="true" aria-label="Mostrar contatos de emergência">
+                                <span>Contatos de emergência</span>
+                                <span class="toggle is-on" aria-hidden="true"></span>
+                            </button>
 
-                            <div class="p-5 rounded-2xl bg-emergency-card border border-emergency-border">
-                                <i data-lucide="users" class="w-6 h-6 text-red-500"></i>
-
-                                <h3 class="font-semibold mt-4">
-                                    Contatos
-                                </h3>
-
-                                <p class="text-sm text-gray-500 mt-2">
-                                    Tenha contatos de emergência
-                                    disponíveis no cartão.
-                                </p>
-                            </div>
-
-                            <div class="p-5 rounded-2xl bg-emergency-card border border-emergency-border">
-                                <i data-lucide="settings" class="w-6 h-6 text-red-500"></i>
-
-                                <h3 class="font-semibold mt-4">
-                                    Controle
-                                </h3>
-
-                                <p class="text-sm text-gray-500 mt-2">
-                                    Gerencie suas informações
-                                    através do seu perfil.
-                                </p>
-                            </div>
+                            <button class="toggle-row" type="button" role="switch" aria-checked="false" aria-label="Ocultar observações privadas">
+                                <span>Observações privadas</span>
+                                <span class="toggle" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!--CTA-->
-            <section class="border-t border-emergency-border bg-gray-950">
-                <div class="max-w-4xl mx-auto px-6 py-20 text-center">
-                    <div class="w-16 h-16 mx-auto rounded-2xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/20">
-                        <i data-lucide="shield-plus" class="w-8 h-8"></i>
+            <section class="final-cta section-pad">
+                <div class="container">
+                    <div class="cta-card" data-animate>
+                        <div>
+                            <span class="section-kicker light">Comece agora</span>
+                            <h2>Prepare suas informações hoje</h2>
+                            <p>Crie seu cartão e deixe os dados importantes prontos, organizados e fáceis de revisar.</p>
+                        </div>
+
+                        <div class="cta-actions">
+                            <a href="./pages/register.html" class="btn btn-white">
+                                Criar minha conta
+                                <i data-lucide="arrow-right" aria-hidden="true"></i>
+                            </a>
+
+                            <a href="./pages/login.html" class="btn btn-white-outline">Já tenho uma conta</a>
+                        </div>
                     </div>
-
-                    <h2 class="text-3xl md:text-4xl font-bold mt-6">
-                        Prepare suas informações hoje.
-                    </h2>
-
-                    <p class="text-gray-400 mt-4 max-w-xl mx-auto">
-                        Crie seu cartão digital e mantenha suas informações
-                        importantes organizadas para situações de emergência.
-                    </p>
-
-                    <a href="./pages/register.html" class="inline-flex items-center gap-2 mt-8 px-7 py-3.5 rounded-xl bg-red-600 hover:bg-red-700 font-semibold transition">
-                        Criar minha conta
-
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    </a>
                 </div>
             </section>
         </main>
 
-        <!--Footer-->
-        <footer class="border-t border-emergency-border">
-            <div class="max-w-7xl mx-auto px-6 py-8">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center">
-                            <i data-lucide="heart-pulse" class="w-5 h-5"></i>
-                        </div>
+        <footer class="site-footer">
+            <div class="container footer-grid">
+                <a href="index.html" class="brand" aria-label="Cartão de Emergência - Início">
+                    <span class="brand-icon" aria-hidden="true">
+                        <i data-lucide="heart-pulse"></i>
+                    </span>
 
-                        <div>
-                            <p class="font-semibold">
-                                Cartão de Emergência
-                            </p>
+                    <span class="brand-copy">
+                        <strong>Cartão de Emergência</strong>
+                        <span>Informação quando mais importa.</span>
+                    </span>
+                </a>
 
-                            <p class="text-xs text-gray-500">
-                                Informação quando mais importa.
-                            </p>
-                        </div>
-                    </div>
+                <p>&copy; <span id="currentYear">2026</span> — Todos os direitos reservados.</p>
 
-                    <p class="text-sm text-gray-500">
-                       &copy; <span id="currentYear"></span> — Todos os direitos reservados.
-                    </p>
-
-                    <div class="flex items-center gap-4">
-                        <a href="./pages/login.html" class="text-sm text-gray-400 hover:text-white transition">
-                            Entrar
-                        </a>
-
-                        <a href="./pages/register.html" class="text-sm text-gray-400 hover:text-white transition">
-                            Cadastro
-                        </a>
-                    </div>
-                </div>
+                <nav class="footer-links" aria-label="Links do rodapé">
+                    <a href="./pages/login.html">Entrar</a>
+                    <a href="./pages/register.html">Cadastro</a>
+                    <a href="#privacidade">Privacidade</a>
+                </nav>
             </div>
         </footer>
 
-        <!--JavaScript-->
         <script src="./js/index.js"></script>
-
-        <!--Lucide-->
         <script>
             lucide.createIcons();
         </script>
