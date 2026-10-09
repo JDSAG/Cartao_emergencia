@@ -654,6 +654,8 @@ body .container {
     border: 0;
     color: #FFFFFF;
     background: var(--color-primary);
+    cursor: default;
+    pointer-events: none;
 }
 
 .call-icon {
