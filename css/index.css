@@ -1024,7 +1024,9 @@ body .container {
     padding: 0 16px;
     color: var(--color-text);
     background: #FFFFFF;
+    cursor: default;
     font-weight: 800;
+    pointer-events: none;
 }
 
 .toggle {
